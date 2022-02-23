@@ -10,7 +10,7 @@ namespace Movies.DataAccess.Configuration
         {
             builder.Property(p => p.Name).HasMaxLength(50).IsRequired();
             builder.Property(p => p.Description).HasMaxLength(250);
-            builder.ToTable("Gender", "movie");
+            builder.ToTable("Genders", "movie");
         }
     }
 }

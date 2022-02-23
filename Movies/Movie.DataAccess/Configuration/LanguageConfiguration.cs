@@ -8,11 +8,8 @@ namespace Movies.DataAccess.Configuration
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {
-            builder.Property(p => p.CreatedAt);
-            builder.Property(p => p.ModifiedAt);
             builder.Property(p => p.Name).HasMaxLength(50).IsRequired();
-            builder.HasKey(p => p.Id);
-            builder.ToTable("Languaage", "movie");
+            builder.ToTable("Languages", "movie");
         }
     }
 }

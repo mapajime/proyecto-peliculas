@@ -13,13 +13,12 @@ namespace Movies.DataAccess.Configuration
             builder.HasMany(p => p.Cast);
             builder.HasOne(p => p.CountryOfOrigin);
             builder.Property(p => p.Director).HasMaxLength(50).IsRequired();
-            builder.Property(p => p.Director).HasMaxLength(50).IsRequired();
-            builder.Property(p => p.Duration);
+            builder.Property(p => p.Duration).IsRequired();
             builder.HasOne(p => p.Gender);
             builder.HasOne(p => p.Language);
             builder.Property(p => p.ReleaseDate).IsRequired();
             builder.Property(p => p.Slogan).HasMaxLength(150);
-            builder.ToTable("Movie", "movie");
+            builder.ToTable("Movies", "movie");
         }
     }
 }

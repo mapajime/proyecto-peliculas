@@ -9,7 +9,7 @@ namespace Movies.DataAccess.Configuration
         public void Configure(EntityTypeBuilder<Country> builder)
         {
             builder.Property(p => p.Name).HasMaxLength(50).IsRequired();
-            builder.ToTable("Country", "movie");
+            builder.ToTable("Countries", "movie");
         }
     }
 }

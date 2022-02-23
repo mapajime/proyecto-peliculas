@@ -17,7 +17,7 @@ namespace Movies.DataAccess.Configuration
             builder.Property(p => p.NetWorth);
             builder.Property(p => p.NumberOfChildren);
             builder.Property(p => p.Weight);
-            builder.ToTable("Actor", "movie");
+            builder.ToTable("Actors", "movie");
         }
     }
 }
