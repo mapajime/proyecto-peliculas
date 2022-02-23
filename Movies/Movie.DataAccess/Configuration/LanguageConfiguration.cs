@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Movies.Entities;
 
-namespace Movies.Entities.Configuration
+namespace Movies.DataAccess.Configuration
 {
     public class LanguageConfiguration : IEntityTypeConfiguration<Language>
     {

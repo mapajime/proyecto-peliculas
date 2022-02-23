@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Movies.Entities;
 
-namespace Movies.Entities.Configuration
+namespace Movies.DataAccess.Configuration
 {
     public class CountryConfiguration : IEntityTypeConfiguration<Country>
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
             builder.Property(p => p.Name).HasMaxLength(50).IsRequired();
-            builder.Property(p => p.CreatedAt);
-            builder.Property(p => p.ModifiedAt);
-            builder.HasKey(p => p.Id);
             builder.ToTable("Country", "movie");
         }
     }
