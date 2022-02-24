@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.Entities", "Movies.Entities\Movies.Entities.csproj", "{F65E0C6E-433D-4982-9F13-7A4856FD711E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movie.DataAccess", "Movie.DataAccess\Movie.DataAccess.csproj", "{EDB21EFE-C3D1-477B-8C2F-49C997B2D6A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.DataAccess", "Movie.DataAccess\Movies.DataAccess.csproj", "{EDB21EFE-C3D1-477B-8C2F-49C997B2D6A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
