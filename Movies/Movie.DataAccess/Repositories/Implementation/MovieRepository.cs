@@ -8,7 +8,6 @@ namespace Movies.DataAccess.Repositories.Implementation
     {
         public MovieRepository(MovieContext context) : base(context)
         {
-
         }
     }
 }
