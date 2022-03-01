@@ -41,7 +41,7 @@ namespace Movies.Business.Implementations
 
         private static void ValidateMovieGender(MovieGender gender)
         {
-            if (gender == null || string.IsNullOrEmpty(gender.Name))
+            if (string.IsNullOrEmpty(gender?.Name))
             {
                 throw new ArgumentNullException("The movie gender cannont be null o empty");
             }

@@ -43,7 +43,7 @@ namespace Movies.Business.Implementations
         {
             if (string.IsNullOrEmpty(country?.Name))
             {
-                throw new ArgumentNullException("The country cannont be null or empty");
+                throw new ArgumentNullException(nameof(country),"The country cannont be null or empty");
             }
         }
     }

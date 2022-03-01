@@ -25,6 +25,7 @@ namespace Movies.Business.Implementations
         public async Task DeleteActorAsync(Guid id) => await _actorRepository.DeleteAsync(id);
 
         public async Task<Actor> GetActorByIdAsync(Guid id) => await _actorRepository.GetByIdAsync(id);
+        public async Task<int> GetActorCountAsync() => await _actorRepository.CountAsync();
 
         public async Task<IEnumerable<Actor>> GetActorByLastNameAsync(string lastName)
         {
@@ -47,18 +48,17 @@ namespace Movies.Business.Implementations
         {
             if (actor == null)
             {
-                throw new ArgumentNullException("The actor is null");
+                throw new ArgumentNullException(nameof(actor),"The actor is null");
             }
-            if (string.IsNullOrEmpty(actor.FirtsName) || string.IsNullOrEmpty(actor.LastName))
+            if (string.IsNullOrEmpty(actor.FirstName) || string.IsNullOrEmpty(actor.LastName))
             {
-                throw new NullReferenceException("The name and lastname of actor is empty");
+                throw new NullReferenceException("The name or lastname of actor is empty");
             }
-            if (actor.DateOfBirth is null)
+            if (!actor.DateOfBirth.HasValue)
             {
                 throw new ArgumentException("The DateofBirth is null");
             }
         }
 
-        public async Task<int> GetActorCountAsync() => await _actorRepository.CountAsync();
     }
 }
