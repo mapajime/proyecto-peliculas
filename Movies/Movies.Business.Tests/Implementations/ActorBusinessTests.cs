@@ -37,7 +37,7 @@ namespace Movies.Business.Tests.Implementations
             //Arrage
             var actorBusiness = new ActorBusiness(_mockActorRepository.Object);
             //assert
-            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => actorBusiness.CreateActorAsync(new Actor { FirstName = null , LastName="Parra", DateOfBirth=new DateTime(2000,12,12)}));
+            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => actorBusiness.CreateActorAsync(new Actor { FirstName = null, LastName = "Parra", DateOfBirth = new DateTime(2000, 12, 12) }));
             Assert.Contains("The name or lastname of actor is empty", exception.Message);
         }
 
@@ -196,6 +196,7 @@ namespace Movies.Business.Tests.Implementations
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => actorBusiness.UpdateActorByIdAsync(new Actor { LastName = "Parra", FirstName = "Ana", DateOfBirth = null }));
             Assert.Contains("The DateofBirth is null", exception.Message);
         }
+
         [Fact]
         public async Task UpdateActorByIdAsync_WhenActorIsOk_ShouldUpdateActor()
         {
@@ -207,8 +208,8 @@ namespace Movies.Business.Tests.Implementations
 
             //Assert
             _mockActorRepository.Verify(a => a.UpdateAsync(It.IsAny<Actor>()), Times.Once);
-
         }
+
         [Fact]
         public async Task GetActorCountAsync_WhenIsCalled_ShoulReturnNumberOfActors()
         {

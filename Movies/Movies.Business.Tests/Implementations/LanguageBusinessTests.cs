@@ -13,6 +13,7 @@ namespace Movies.Business.Tests.Implementations
     public class LanguageBusinessTests
     {
         private readonly Mock<ILanguageRepository> _mockLanguageRepository;
+
         public LanguageBusinessTests()
         {
             _mockLanguageRepository = new Mock<ILanguageRepository>();
@@ -57,20 +58,20 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
-        public async Task GetLanguageByNameAsync_WhenLanguageIsNull_ShouldReturnLanguageNull()
+        public async Task GetLanguagesByNameAsync_WhenLanguageIsNull_ShouldReturnNull()
         {
             //Arrange
             var languageBusiness = new LanguageBusiness(_mockLanguageRepository.Object);
 
             //Act
-            var languages = await languageBusiness.GetLanguageByNameAsync(null);
+            var languages = await languageBusiness.GetLanguagesByNameAsync(null);
 
             //Assert
             Assert.Null(languages);
         }
 
         [Fact]
-        public async Task GetLanguageByNameAsync_WhenLanguageIsOk_ShouldReturnValues()
+        public async Task GetLanguagesByNameAsync_WhenLanguageIsOk_ShouldReturnValues()
         {
             //Arrange
             _mockLanguageRepository.Setup(f => f.FilterAsync(It.IsAny<Func<Language, bool>>()))
@@ -83,7 +84,7 @@ namespace Movies.Business.Tests.Implementations
             var languageBusiness = new LanguageBusiness(_mockLanguageRepository.Object);
 
             //Act
-            var languages = (await languageBusiness.GetLanguageByNameAsync("Ingles")).ToList();
+            var languages = (await languageBusiness.GetLanguagesByNameAsync("Ingles")).ToList();
 
             //Assert
             Assert.NotNull(languages);
@@ -115,7 +116,6 @@ namespace Movies.Business.Tests.Implementations
 
             //Assert
             _mockLanguageRepository.Verify(a => a.UpdateAsync(It.IsAny<Language>()), Times.Once);
-
         }
     }
 }

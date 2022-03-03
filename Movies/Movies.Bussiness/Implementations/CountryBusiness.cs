@@ -24,7 +24,7 @@ namespace Movies.Business.Implementations
 
         public async Task DeleteCountryAsync(Guid id) => await _countryRepository.DeleteAsync(id);
 
-        public async Task<IEnumerable<Country>> GetCountryByName(string name)
+        public async Task<IEnumerable<Country>> GetCountriesByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
             {

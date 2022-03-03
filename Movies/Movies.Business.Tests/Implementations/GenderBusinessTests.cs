@@ -20,7 +20,7 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
-        public async Task GenderCreateGenderAsync_WhenGenderIsNull_ShouldThrowArgumentNullException()
+        public async Task CreateGenderAsync_WhenGenderIsNull_ShouldThrowArgumentNullException()
         {
             //Arrange
             var genderBusiness = new GenderBusiness(_mockGenderRepository.Object);
@@ -32,7 +32,7 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
-        public async Task GenderCreateGenderAsync_WhenGenderIsOk_ShouldCreateGender()
+        public async Task CreateGenderAsync_WhenGenderIsOk_ShouldCreateGender()
         {
             //Arrange
             var genderBusiness = new GenderBusiness(_mockGenderRepository.Object);
@@ -45,7 +45,7 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
-        public async Task DeleteGenderAsync_WhenIdGenderExiste_ShouldDeleterGender()
+        public async Task DeleteGenderAsync_WhenIdGenderExists_ShouldDeleterGender()
         {
             //Arrange
             var genderBusiness = new GenderBusiness(_mockGenderRepository.Object);
@@ -71,7 +71,7 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
-        public async Task GetGenderByNameAsync_WhenNameGenderExiste_ShouldReturNameGender()
+        public async Task GetGenderByNameAsync_WhenNameGenderExist_ShouldReturnGenders()
         {
             //Arrange
             _mockGenderRepository.Setup(g => g.FilterAsync(It.IsAny<Func<Gender, bool>>()))
@@ -87,18 +87,18 @@ namespace Movies.Business.Tests.Implementations
 
             //Assert
             Assert.NotNull(genders);
-            Assert.Equal("Femenino", genders.First().Name);
             Assert.Equal(2, genders.Count());
+            Assert.Equal("Femenino", genders.First().Name);
         }
 
         [Fact]
-        public async Task UpdateGenderByIdAsync_WhenIdGenderIsNull_ShouldThrowArgumentNullException()
+        public async Task UpdateGenderByIdAsync_WhenGenderIsNull_ShouldThrowArgumentNullException()
         {
             //Arrange
             var genderBusiness = new GenderBusiness(_mockGenderRepository.Object);
 
             //Act
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => genderBusiness.CreateGenderAsync(null));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => genderBusiness.UpdateGenderByIdAsync(null));
 
             //Assert
             Assert.Contains("The gender cannont be null or empty", exception.Message);
@@ -106,7 +106,7 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
-        public async Task UpdateGenderByIdAsync_WhenIdGenderExist_ShouldUpdateGender()
+        public async Task UpdateGenderByIdAsync_WhenGenderExist_ShouldUpdateGender()
         {
             //Arrange
             var genderBusiness = new GenderBusiness(_mockGenderRepository.Object);

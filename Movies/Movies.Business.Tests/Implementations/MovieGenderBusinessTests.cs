@@ -5,17 +5,16 @@ using Movies.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Movies.Business.Tests.Implementations
 {
-    public class MoviGenderBusinessTests
+    public class MovieGenderBusinessTests
     {
         private readonly Mock<IMovieGenderRepository> _mockMovieGenderRepository;
 
-        public MoviGenderBusinessTests()
+        public MovieGenderBusinessTests()
         {
             _mockMovieGenderRepository = new Mock<IMovieGenderRepository>();
         }
@@ -79,8 +78,8 @@ namespace Movies.Business.Tests.Implementations
                 .ReturnsAsync(new List<MovieGender>
                 {
                     new MovieGender { Name = "Accion"},
-                    new MovieGender { Name= "Romantica"},
-                    new MovieGender {Name="Suspenso"}
+                    new MovieGender { Name = "Romantica"},
+                    new MovieGender { Name = "Suspenso"}
                 });
             var movieGenderBusiness = new MovieGenderBusiness(_mockMovieGenderRepository.Object);
 

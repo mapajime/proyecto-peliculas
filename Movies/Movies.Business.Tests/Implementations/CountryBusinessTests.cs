@@ -46,7 +46,7 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
-        public async Task DeleteCountryAsync_WhenIdCountryExist_ShouldDeleteCountrySend()
+        public async Task DeleteCountryAsync_WhenIdCountryExist_ShouldDeleteCountrySent()
         {
             //Arrange
             var countryBusiness = new CountryBusiness(_mockCountryRepository.Object);
@@ -59,20 +59,20 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
-        public async Task GetCountryByName_WhenCountryIsNull_ShouldReturnNull()
+        public async Task GetCountriesByNameAsync_WhenCountryIsNull_ShouldReturnNull()
         {
             //Arrange
             var countryBusiness = new CountryBusiness(_mockCountryRepository.Object);
 
             //Act
-            var country = await countryBusiness.GetCountryByName(null);
+            var country = await countryBusiness.GetCountriesByNameAsync(null);
 
             //Assert
             Assert.Null(country);
         }
 
         [Fact]
-        public async Task GetCountryByName_WhenCountryIsOk_ShouldGetCountry()
+        public async Task GetCountriesByNameAsync_WhenCountryIsOk_ShouldGetCountry()
         {
             //Arrange
             _mockCountryRepository.Setup(c => c.FilterAsync(It.IsAny<Func<Country, bool>>()))
@@ -84,16 +84,16 @@ namespace Movies.Business.Tests.Implementations
             var countryBusiness = new CountryBusiness(_mockCountryRepository.Object);
 
             //Act
-            var country = (await countryBusiness.GetCountryByName("Colombia")).ToList();
+            var countries = (await countryBusiness.GetCountriesByNameAsync("Colombia")).ToList();
 
             //Assert
-            Assert.NotNull(country);
-            Assert.Equal(2, country.Count);
-            Assert.Contains("Colombia", country.First().Name);
+            Assert.NotNull(countries);
+            Assert.Equal(2, countries.Count);
+            Assert.Contains(countries, c => c.Name == "Colombia");
         }
 
         [Fact]
-        public async Task UpdateCountryByIdAsync_WhenCountryIsNull_ShouldRetunNull()
+        public async Task UpdateCountryByIdAsync_WhenCountryIsNull_ShouldThrowArgumentNullException()
         {
             //Arrange
             var countryBusiness = new CountryBusiness(_mockCountryRepository.Object);

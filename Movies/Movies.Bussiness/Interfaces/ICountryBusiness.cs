@@ -13,6 +13,6 @@ namespace Movies.Business.Interfaces
 
         Task DeleteCountryAsync(Guid id);
 
-        Task<IEnumerable<Country>> GetCountryByName(string name);
+        Task<IEnumerable<Country>> GetCountriesByNameAsync(string name);
     }
 }
