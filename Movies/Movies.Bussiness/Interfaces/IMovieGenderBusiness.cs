@@ -9,7 +9,7 @@ namespace Movies.Business.Interfaces
     {
         Task CreateGenderMovieAsync(MovieGender movieGender);
 
-        Task UpdateGenderMovieAsync(MovieGender gender);
+        Task UpdateGenderMovieByIdAsync(MovieGender gender);
 
         Task DeleteGenderMovieAsync(Guid id);
 

@@ -33,7 +33,7 @@ namespace Movies.Business.Implementations
             return await _countryRepository.FilterAsync(n => n.Name == name);
         }
 
-        public async Task UpdateCountryAsync(Country country)
+        public async Task UpdateCountryByIdAsync(Country country)
         {
             ValidateCountry(country);
             await _countryRepository.UpdateAsync(country);
@@ -43,7 +43,7 @@ namespace Movies.Business.Implementations
         {
             if (string.IsNullOrEmpty(country?.Name))
             {
-                throw new ArgumentNullException(nameof(country),"The country cannont be null or empty");
+                throw new ArgumentNullException(nameof(country), "The country cannont be null or empty");
             }
         }
     }

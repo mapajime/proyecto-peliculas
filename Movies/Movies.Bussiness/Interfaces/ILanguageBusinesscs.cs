@@ -9,7 +9,7 @@ namespace Movies.Business.Interfaces
     {
         Task CreateLanguageAsync(Language language);
 
-        Task UpdateLanguageAsync(Language language);
+        Task UpdateLanguageByIdAsync(Language language);
 
         Task DeleteLanguageAsync(Guid id);
 

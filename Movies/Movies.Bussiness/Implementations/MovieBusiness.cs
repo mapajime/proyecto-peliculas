@@ -53,7 +53,7 @@ namespace Movies.Business.Implementations
         {
             if (movie == null)
             {
-                throw new ArgumentNullException("The movie is null");
+                throw new ArgumentNullException(nameof(movie), "The movie is null");
             }
             if (string.IsNullOrEmpty(movie.Name))
             {

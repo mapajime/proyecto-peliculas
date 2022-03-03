@@ -9,9 +9,9 @@ namespace Movies.Business.Interfaces
     {
         Task CreateGenderAsync(Gender gender);
 
-        Task UpdateGerderAsync(Gender gender);
+        Task UpdateGenderByIdAsync(Gender gender); 
 
-        Task<IEnumerable<Gender>> GetGenderByNameAsync(string name);
+         Task<IEnumerable<Gender>> GetGenderByNameAsync(string name);
 
         Task DeleteGenderAsync(Guid id);
     }

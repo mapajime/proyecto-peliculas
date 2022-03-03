@@ -37,8 +37,8 @@ namespace Movies.Business.Tests.Implementations
             //Arrage
             var actorBusiness = new ActorBusiness(_mockActorRepository.Object);
             //assert
-            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => actorBusiness.CreateActorAsync(new Actor { FirstName = null }));
-            Assert.Contains("The name and lastname of actor is empty", exception.Message);
+            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => actorBusiness.CreateActorAsync(new Actor { FirstName = null , LastName="Parra", DateOfBirth=new DateTime(2000,12,12)}));
+            Assert.Contains("The name or lastname of actor is empty", exception.Message);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Movies.Business.Tests.Implementations
             var actorBusiness = new ActorBusiness(_mockActorRepository.Object);
             //assert
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() => actorBusiness.CreateActorAsync(new Actor { LastName = null }));
-            Assert.Contains("The name and lastname of actor is empty", exception.Message);
+            Assert.Contains("The name or lastname of actor is empty", exception.Message);
         }
 
         [Fact]
@@ -57,8 +57,8 @@ namespace Movies.Business.Tests.Implementations
             //Arrage
             var actorBusiness = new ActorBusiness(_mockActorRepository.Object);
             //assert
-            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => actorBusiness.CreateActorAsync(new Actor { DateOfBirth = null }));
-            Assert.Contains("The name and lastname of actor is empty", exception.Message);
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => actorBusiness.CreateActorAsync(new Actor { FirstName = "Ana", LastName = "Parra", DateOfBirth = null }));
+            Assert.Contains("The DateofBirth is null", exception.Message);
             _mockActorRepository.Verify(e => e.AddAsync(It.IsAny<Actor>()), Times.Never);
         }
 
@@ -223,5 +223,4 @@ namespace Movies.Business.Tests.Implementations
             Assert.Equal(9, numberOfActors);
         }
     }
-
 }

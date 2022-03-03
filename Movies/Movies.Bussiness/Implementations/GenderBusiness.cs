@@ -33,7 +33,7 @@ namespace Movies.Business.Implementations
             return await _genderRepository.FilterAsync(n => n.Name.Contains(name));
         }
 
-        public async Task UpdateGerderAsync(Gender gender)
+        public async Task UpdateGenderByIdAsync(Gender gender)
         {
             ValidateGender(gender);
             await _genderRepository.UpdateAsync(gender);
@@ -41,9 +41,9 @@ namespace Movies.Business.Implementations
 
         private static void ValidateGender(Gender gender)
         {
-            if ( string.IsNullOrEmpty(gender?.Name))
+            if (string.IsNullOrEmpty(gender?.Name))
             {
-                throw new ArgumentNullException("The gender cannont be null or empty");
+                throw new ArgumentNullException(nameof(gender), "The gender cannont be null or empty");
             }
         }
     }

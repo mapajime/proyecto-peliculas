@@ -9,7 +9,7 @@ namespace Movies.Business.Interfaces
     {
         Task CreateCountryAsync(Country country);
 
-        Task UpdateCountryAsync(Country country);
+        Task UpdateCountryByIdAsync(Country country);
 
         Task DeleteCountryAsync(Guid id);
 

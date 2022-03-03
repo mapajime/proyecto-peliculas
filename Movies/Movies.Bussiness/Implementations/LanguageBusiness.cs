@@ -30,7 +30,7 @@ namespace Movies.Business.Implementations
             return await _languageRepository.FilterAsync(n => n.Name.Contains(name));
         }
 
-        public async Task UpdateLanguageAsync(Language language)
+        public async Task UpdateLanguageByIdAsync(Language language)
         {
             ValidateLanguage(language);
             await _languageRepository.UpdateAsync(language);
@@ -40,7 +40,7 @@ namespace Movies.Business.Implementations
         {
             if (string.IsNullOrEmpty(language?.Name))
             {
-                throw new ArgumentNullException("The language cannont be null o empty");
+                throw new ArgumentNullException(nameof(language),"The language cannont be null o empty");
             }
         }
     }
