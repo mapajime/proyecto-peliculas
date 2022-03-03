@@ -23,10 +23,7 @@ namespace Movies.Business.Implementations
             await _repository.AddAsync(movie);
         }
 
-        public async Task DeleteMovieAsync(Guid id)
-        {
-            await _repository.DeleteAsync(id);
-        }
+        public async Task DeleteMovieAsync(Guid id) => await _repository.DeleteAsync(id);
 
         public async Task<IEnumerable<Movie>> GetAllMoviesAsync() => await _repository.GetAllAsync();
 
@@ -56,7 +53,7 @@ namespace Movies.Business.Implementations
         {
             if (movie == null)
             {
-                throw new ArgumentNullException("The movie is null");
+                throw new ArgumentNullException(nameof(movie), "The movie is null");
             }
             if (string.IsNullOrEmpty(movie.Name))
             {

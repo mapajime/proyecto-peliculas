@@ -9,7 +9,7 @@ namespace Movies.DataAccess.Configuration
         public void Configure(EntityTypeBuilder<Actor> builder)
         {
             builder.Property(p => p.DateOfBirth);
-            builder.Property(P => P.FirtsName).HasMaxLength(50).IsRequired();
+            builder.Property(P => P.FirstName).HasMaxLength(50).IsRequired();
             builder.HasOne(p => p.Gender);
             builder.Property(p => p.Height).IsRequired();
             builder.Property(p => p.LastName).HasMaxLength(50).IsRequired();

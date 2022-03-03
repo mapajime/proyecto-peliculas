@@ -4,7 +4,7 @@ namespace Movies.Entities
 {
     public class Actor : EntityBase
     {
-        public string FirtsName { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public virtual Country Nacionality { get; set; }
