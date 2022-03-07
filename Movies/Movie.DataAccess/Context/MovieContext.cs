@@ -6,11 +6,9 @@ namespace Movies.DataAccess.Context
 {
     public class MovieContext : DbContext
     {
-        private readonly string _connectionString;
-
-        public MovieContext(string connectionString)
+        public MovieContext(DbContextOptions dbContextOptions): base (dbContextOptions)
         {
-            _connectionString = connectionString;
+           
         }
 
         public DbSet<Actor> Actors { get; set; }
@@ -20,11 +18,6 @@ namespace Movies.DataAccess.Context
         public DbSet<Movie> Movies { get; set; }
         public DbSet<MovieGender> MovieGenders { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //  @"Server=.;Database=Movie;User Id=sa;Password=Yupi2021*;"
-            optionsBuilder.UseSqlServer(_connectionString);
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

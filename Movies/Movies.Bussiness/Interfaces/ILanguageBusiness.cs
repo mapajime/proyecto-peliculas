@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Movies.Business.Interfaces
 {
-    public interface ILanguageBusinesscs
+    public interface ILanguageBusiness
     {
         Task CreateLanguageAsync(Language language);
 

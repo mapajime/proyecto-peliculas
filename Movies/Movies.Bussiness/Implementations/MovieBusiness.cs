@@ -27,10 +27,7 @@ namespace Movies.Business.Implementations
 
         public async Task<IEnumerable<Movie>> GetAllMoviesAsync() => await _repository.GetAllAsync();
 
-        public async Task<Movie> GetMovieByIdAsync(Guid id)
-        {
-            return await _repository.GetByIdAsync(id);
-        }
+        public async Task<Movie> GetMovieByIdAsync(Guid id) => await _repository.GetByIdAsync(id);
 
         public async Task<IEnumerable<Movie>> GetMoviesByNameAsync(string name)
         {

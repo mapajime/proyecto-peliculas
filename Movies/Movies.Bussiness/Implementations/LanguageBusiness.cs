@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Movies.Business.Implementations
 {
-    public class LanguageBusiness : ILanguageBusinesscs
+    public class LanguageBusiness : ILanguageBusiness
     {
         private readonly ILanguageRepository _languageRepository;
         public LanguageBusiness(ILanguageRepository repository)

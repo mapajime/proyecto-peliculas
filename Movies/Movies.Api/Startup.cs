@@ -34,6 +34,7 @@ namespace Movies.Api
 
             services.AddControllers();
             services.AddDbContext<MovieContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("movies")));
+            services.AddSwaggerGen();
             services.AddScoped<IActorRepository, ActorRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<ILanguageRepository, LanguageRepository>();
@@ -42,7 +43,7 @@ namespace Movies.Api
             services.AddScoped<IMovieGenderRepository, MovieGenderRepository>();
             services.AddScoped<IActorBusiness, ActorBusiness>();
             services.AddScoped<ICountryBusiness, CountryBusiness>();
-            services.AddScoped<ILanguageBusinesscs, LanguageBusiness>();
+            services.AddScoped<ILanguageBusiness, LanguageBusiness>();
             services.AddScoped<IMovieGenderBusiness, MovieGenderBusiness>();
             services.AddScoped<IMovieBusiness, MovieBusiness>();
             services.AddScoped<IGenderBusiness, GenderBusiness>();
@@ -57,6 +58,14 @@ namespace Movies.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movies API");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
