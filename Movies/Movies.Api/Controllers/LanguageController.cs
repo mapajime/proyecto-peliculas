@@ -36,7 +36,7 @@ namespace Movies.Api.Controllers
             }
         }
 
-        [HttpDelete("{id : Guid}")]
+        [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteLanguageAsync(Guid id)
         {
             await _languageBusiness.DeleteLanguageAsync(id);
@@ -46,6 +46,10 @@ namespace Movies.Api.Controllers
         [HttpGet("by-name/{name}")]
         public async Task<IActionResult> GetLanguagesByNameAsync(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest();
+            }
             if (string.IsNullOrEmpty(name))
             {
                 return BadRequest();

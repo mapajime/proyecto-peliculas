@@ -47,6 +47,10 @@ namespace Movies.Api.Controllers
         [HttpGet("by-name/{name}")]
         public async Task<IActionResult> GetGenderByNameAsync(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest();
+            }
             var result = await _genderBusiness.GetGenderByNameAsync(name);
             if (result == null)
             {

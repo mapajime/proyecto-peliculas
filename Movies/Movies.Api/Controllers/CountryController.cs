@@ -48,7 +48,7 @@ namespace Movies.Api.Controllers
                 return BadRequest();
             }
             var result = await _countryBusiness.GetCountriesByNameAsync(nameCountry);
-            if (nameCountry == null)
+            if (result == null)
             {
                 return NotFound();
             }
