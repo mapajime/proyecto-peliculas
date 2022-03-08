@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
-using Movies.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -19,13 +19,12 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCountryAsync(Country country)
+        public async Task<IActionResult> CreateCountryAsync(CountryModel country)
         {
             try
             {
                 await _countryBusiness.CreateCountryAsync(country);
                 return Ok();
-
             }
             catch (Exception ex)
             {
@@ -56,7 +55,7 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCountryByIdAsync(Country country)
+        public async Task<IActionResult> UpdateCountryByIdAsync(CountryModel country)
         {
             if (string.IsNullOrEmpty(country.Name))
             {

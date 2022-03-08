@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
-using Movies.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -17,8 +17,9 @@ namespace Movies.Api.Controllers
         {
             _languageBusiness = languageBusiness;
         }
+
         [HttpPost]
-        public async Task<IActionResult> CreateLanguageAsync(Language language)
+        public async Task<IActionResult> CreateLanguageAsync(LanguageModel language)
         {
             if (language == null)
             {
@@ -28,7 +29,6 @@ namespace Movies.Api.Controllers
             {
                 await _languageBusiness.CreateLanguageAsync(language);
                 return Ok();
-
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateLanguageByIdAsync(Language language)
+        public async Task<IActionResult> UpdateLanguageByIdAsync(LanguageModel language)
         {
             if (language == null)
             {

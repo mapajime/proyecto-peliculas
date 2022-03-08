@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
-using Movies.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -19,7 +19,7 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMovieAsync(Movie movie)
+        public async Task<IActionResult> CreateMovieAsync(MovieModel movie)
         {
             if (movie == null)
             {
@@ -49,7 +49,7 @@ namespace Movies.Api.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetMovieByIdAsync(Guid id) => Ok(await _movieBusiness.GetMovieByIdAsync(id));
 
-        [HttpGet ("by-name/{name}")]
+        [HttpGet("by-name/{name}")]
         public async Task<IActionResult> GetMoviesByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -68,7 +68,7 @@ namespace Movies.Api.Controllers
         public async Task<IActionResult> GetNumberOfMoviesAsync() => Ok(await _movieBusiness.GetNumberOfMoviesAsync());
 
         [HttpPut]
-        public async Task<IActionResult> UpdateMovieAsync(Movie movie)
+        public async Task<IActionResult> UpdateMovieAsync(MovieModel movie)
         {
             if (movie == null)
             {

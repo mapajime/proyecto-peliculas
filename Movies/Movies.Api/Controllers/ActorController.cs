@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
-using Movies.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -14,12 +14,12 @@ namespace Movies.Api.Controllers
         private readonly IActorBusiness _actorBusiness;
 
         public ActorController(IActorBusiness actorBusiness)
-        {   
+        {
             _actorBusiness = actorBusiness;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateActorAsync(Actor actor)
+        public async Task<IActionResult> CreateActorAsync(ActorModel actor)
         {
             if (actor == null)
             {
@@ -75,7 +75,7 @@ namespace Movies.Api.Controllers
         public async Task<IActionResult> GetAllActorsAsync() => Ok(await _actorBusiness.GetAllActorsAsync());
 
         [HttpPut]
-        public async Task<IActionResult> UpdateActorByIdAsync(Actor actor)
+        public async Task<IActionResult> UpdateActorByIdAsync(ActorModel actor)
         {
             if (actor == null)
             {
@@ -85,10 +85,10 @@ namespace Movies.Api.Controllers
             {
                 await _actorBusiness.UpdateActorByIdAsync(actor);
                 return Ok();
-            } 
+            }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

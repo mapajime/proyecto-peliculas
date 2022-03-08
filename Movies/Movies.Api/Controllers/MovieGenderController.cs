@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
-using Movies.Entities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +20,7 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGenderMovieAsync(MovieGender movieGender)
+        public async Task<IActionResult> CreateGenderMovieAsync(MovieGenderModel movieGender)
         {
             if (movieGender == null)
             {
@@ -30,7 +30,6 @@ namespace Movies.Api.Controllers
             {
                 await _movieGenderBusiness.CreateGenderMovieAsync(movieGender);
                 return Ok();
-
             }
             catch (Exception ex)
             {
@@ -63,8 +62,8 @@ namespace Movies.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetGenderMovieByIdAsync(Guid id)
         {
-            var result = await _movieGenderBusiness.GetGenderMovieByIdAsync(id); // se obtiene eel resultado 
-            if (result == null) //se valida si el resultado es nulo 
+            var result = await _movieGenderBusiness.GetGenderMovieByIdAsync(id); // se obtiene eel resultado
+            if (result == null) //se valida si el resultado es nulo
             {
                 return NotFound(); // no fue encontrado el valor
             }
@@ -72,7 +71,7 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateGenderMovieByIdAsync(MovieGender movieGender)
+        public async Task<IActionResult> UpdateGenderMovieByIdAsync(MovieGenderModel movieGender)
         {
             if (movieGender == null)
             {
@@ -82,13 +81,11 @@ namespace Movies.Api.Controllers
             {
                 await _movieGenderBusiness.UpdateGenderMovieByIdAsync(movieGender);
                 return Ok();
-
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-
         }
     }
 }

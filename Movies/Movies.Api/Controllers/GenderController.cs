@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
-using Movies.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -19,7 +19,7 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGenderAsync(Gender gender)
+        public async Task<IActionResult> CreateGenderAsync(GenderModel gender)
         {
             if (gender == null)
             {
@@ -29,7 +29,6 @@ namespace Movies.Api.Controllers
             {
                 await _genderBusiness.CreateGenderAsync(gender);
                 return Ok();
-
             }
             catch (Exception ex)
             {
@@ -60,7 +59,7 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateGenderByIdAsync(Gender gender)
+        public async Task<IActionResult> UpdateGenderByIdAsync(GenderModel gender)
         {
             if (gender == null)
             {
@@ -70,7 +69,6 @@ namespace Movies.Api.Controllers
             {
                 await _genderBusiness.UpdateGenderByIdAsync(gender);
                 return Ok();
-
             }
             catch (Exception ex)
             {
