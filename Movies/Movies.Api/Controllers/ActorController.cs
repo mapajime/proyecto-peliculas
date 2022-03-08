@@ -14,7 +14,7 @@ namespace Movies.Api.Controllers
         private readonly IActorBusiness _actorBusiness;
 
         public ActorController(IActorBusiness actorBusiness)
-        {
+        {   
             _actorBusiness = actorBusiness;
         }
 

@@ -9,11 +9,11 @@ namespace Movies.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CountryControllers : ControllerBase
+    public class CountryController : ControllerBase
     {
         private readonly ICountryBusiness _countryBusiness;
 
-        public CountryControllers(ICountryBusiness countryBusiness)
+        public CountryController(ICountryBusiness countryBusiness)
         {
             _countryBusiness = countryBusiness;
         }
@@ -21,24 +21,32 @@ namespace Movies.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCountryAsync(Country country)
         {
-            if (string.IsNullOrEmpty(country.Name))
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                await _countryBusiness.CreateCountryAsync(country);
+                return Ok();
+
             }
-            await _countryBusiness.CreateCountryAsync(country);
-            return Ok();
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
-        [HttpDelete ("{id : Guid}")]
+        [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteCountryAsync(Guid id)
         {
             await _countryBusiness.DeleteCountryAsync(id);
             return Ok();
         }
 
-        [HttpGet ("by-nameCountry/{nameCountry}")]
+        [HttpGet("by-name/{name}")]
         public async Task<IActionResult> GetCountriesByNameAsync(string nameCountry)
         {
+            if (string.IsNullOrEmpty(nameCountry))
+            {
+                return BadRequest();
+            }
             var result = await _countryBusiness.GetCountriesByNameAsync(nameCountry);
             if (nameCountry == null)
             {

@@ -9,39 +9,51 @@ namespace Movies.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LanguageControllers : ControllerBase
+    public class LanguageController : ControllerBase
     {
         private readonly ILanguageBusiness _languageBusiness;
 
-        public LanguageControllers(ILanguageBusiness languageBusiness)
+        public LanguageController(ILanguageBusiness languageBusiness)
         {
             _languageBusiness = languageBusiness;
         }
         [HttpPost]
         public async Task<IActionResult> CreateLanguageAsync(Language language)
         {
-            if (string.IsNullOrEmpty(language.Name))
+            if (language == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest();
             }
-            await _languageBusiness.CreateLanguageAsync(language);
-            return Ok();
+            try
+            {
+                await _languageBusiness.CreateLanguageAsync(language);
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
-        [HttpDelete ("{id : Guid}")]
+        [HttpDelete("{id : Guid}")]
         public async Task<IActionResult> DeleteLanguageAsync(Guid id)
         {
             await _languageBusiness.DeleteLanguageAsync(id);
             return Ok();
         }
 
-        [HttpGet ("by-name/{name}")]
+        [HttpGet("by-name/{name}")]
         public async Task<IActionResult> GetLanguagesByNameAsync(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest();
+            }
             var result = await _languageBusiness.GetLanguagesByNameAsync(name);
             if (result == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             return Ok(result);
         }
@@ -51,10 +63,17 @@ namespace Movies.Api.Controllers
         {
             if (language == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest();
             }
-            await _languageBusiness.UpdateLanguageByIdAsync(language);
-            return Ok();
+            try
+            {
+                await _languageBusiness.UpdateLanguageByIdAsync(language);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

@@ -9,11 +9,11 @@ namespace Movies.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MovieControllers : ControllerBase
+    public class MovieController : ControllerBase
     {
         private readonly IMovieBusiness _movieBusiness;
 
-        public MovieControllers(IMovieBusiness movieBusiness)
+        public MovieController(IMovieBusiness movieBusiness)
         {
             _movieBusiness = movieBusiness;
         }
@@ -36,7 +36,7 @@ namespace Movies.Api.Controllers
             }
         }
 
-        [HttpDelete("{id : Guid}")]
+        [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteMovieAsync(Guid id)
         {
             await _movieBusiness.DeleteMovieAsync(id);
@@ -46,14 +46,18 @@ namespace Movies.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMoviesAsync() => Ok(await _movieBusiness.GetAllMoviesAsync());
 
-        [HttpGet("{id : Guid}")]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetMovieByIdAsync(Guid id) => Ok(await _movieBusiness.GetMovieByIdAsync(id));
 
         [HttpGet ("by-name/{name}")]
         public async Task<IActionResult> GetMoviesByNameAsync(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest();
+            }
             var result = await _movieBusiness.GetMoviesByNameAsync(name);
-            if (name == null)
+            if (result == null)
             {
                 return NotFound();
             }
@@ -68,7 +72,7 @@ namespace Movies.Api.Controllers
         {
             if (movie == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             try
             {

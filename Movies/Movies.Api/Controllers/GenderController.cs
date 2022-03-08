@@ -9,11 +9,11 @@ namespace Movies.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GenderControllers : ControllerBase
+    public class GenderController : ControllerBase
     {
         private readonly IGenderBusiness _genderBusiness;
 
-        public GenderControllers(IGenderBusiness genderBusiness)
+        public GenderController(IGenderBusiness genderBusiness)
         {
             _genderBusiness = genderBusiness;
         }
@@ -23,10 +23,18 @@ namespace Movies.Api.Controllers
         {
             if (gender == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest();
             }
-            await _genderBusiness.CreateGenderAsync(gender);
-            return Ok();
+            try
+            {
+                await _genderBusiness.CreateGenderAsync(gender);
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpDelete("{id : Guid}")]
@@ -36,13 +44,13 @@ namespace Movies.Api.Controllers
             return Ok();
         }
 
-        [HttpGet ("by-name/{name}")]
+        [HttpGet("by-name/{name}")]
         public async Task<IActionResult> GetGenderByNameAsync(string name)
         {
             var result = await _genderBusiness.GetGenderByNameAsync(name);
             if (result == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             return Ok(result);
         }
@@ -54,8 +62,16 @@ namespace Movies.Api.Controllers
             {
                 return BadRequest();
             }
-            await _genderBusiness.UpdateGenderByIdAsync(gender);
-            return Ok();
+            try
+            {
+                await _genderBusiness.UpdateGenderByIdAsync(gender);
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }
