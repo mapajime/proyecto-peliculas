@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
 using Movies.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Api.Controllers
@@ -12,14 +15,16 @@ namespace Movies.Api.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieBusiness _movieBusiness;
+        private readonly IMapper _mapper;
 
-        public MovieController(IMovieBusiness movieBusiness)
+        public MovieController(IMovieBusiness movieBusiness, IMapper mapper)
         {
             _movieBusiness = movieBusiness;
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMovieAsync(Movie movie)
+        public async Task<IActionResult> CreateMovieAsync(MovieModel movie)
         {
             if (movie == null)
             {
@@ -27,7 +32,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _movieBusiness.CreateMovieAsync(movie);
+                await _movieBusiness.CreateMovieAsync(_mapper.Map<Movie>(movie));
                 return Ok();
             }
             catch (Exception ex)
@@ -44,12 +49,20 @@ namespace Movies.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllMoviesAsync() => Ok(await _movieBusiness.GetAllMoviesAsync());
+        public async Task<IActionResult> GetAllMoviesAsync()
+        {
+            var result = await _movieBusiness.GetAllMoviesAsync();
+            return Ok(result.Select(m => _mapper.Map<MovieModel>(m)));
+        }
 
         [HttpGet("{id:Guid}")]
-        public async Task<IActionResult> GetMovieByIdAsync(Guid id) => Ok(await _movieBusiness.GetMovieByIdAsync(id));
+        public async Task<IActionResult> GetMovieByIdAsync(Guid id)
+        {
+            var result = await _movieBusiness.GetMovieByIdAsync(id);
+            return Ok(_mapper.Map<MovieModel>(result));
+        }
 
-        [HttpGet ("by-name/{name}")]
+        [HttpGet("by-name/{name}")]
         public async Task<IActionResult> GetMoviesByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -61,14 +74,14 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.Select(m => _mapper.Map<MovieModel>(m)));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetNumberOfMoviesAsync() => Ok(await _movieBusiness.GetNumberOfMoviesAsync());
 
         [HttpPut]
-        public async Task<IActionResult> UpdateMovieAsync(Movie movie)
+        public async Task<IActionResult> UpdateMovieAsync(MovieModel movie)
         {
             if (movie == null)
             {
@@ -76,7 +89,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _movieBusiness.UpdateMovieAsync(movie);
+                await _movieBusiness.UpdateMovieAsync(_mapper.Map<Movie>(movie));
                 return Ok();
             }
             catch (Exception ex)

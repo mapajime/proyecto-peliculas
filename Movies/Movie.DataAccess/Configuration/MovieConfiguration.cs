@@ -11,11 +11,11 @@ namespace Movies.DataAccess.Configuration
             builder.Property(p => p.Name).HasMaxLength(250).IsRequired();
             builder.Property(p => p.Argument).HasMaxLength(2048).IsRequired();
             builder.HasMany(p => p.Cast);
-            builder.HasOne(p => p.CountryOfOrigin);
+            builder.HasOne(p => p.CountryOfOrigin).WithMany().HasForeignKey(c => c.CountryId);
             builder.Property(p => p.Director).HasMaxLength(50).IsRequired();
             builder.Property(p => p.Duration).IsRequired();
-            builder.HasOne(p => p.Gender);
-            builder.HasOne(p => p.Language);
+            builder.HasOne(p => p.Gender).WithMany().HasForeignKey(g => g.MovieGenderId);
+            builder.HasOne(p => p.Language).WithMany().HasForeignKey(l => l.LanguageId);
             builder.Property(p => p.ReleaseDate).IsRequired();
             builder.Property(p => p.Slogan).HasMaxLength(150);
             builder.ToTable("Movies", "movie");

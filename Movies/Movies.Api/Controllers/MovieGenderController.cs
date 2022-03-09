@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
 using Movies.Entities;
 using System;
@@ -13,14 +15,16 @@ namespace Movies.Api.Controllers
     public class MovieGenderController : ControllerBase
     {
         private readonly IMovieGenderBusiness _movieGenderBusiness;
+        private readonly IMapper _mapper;
 
-        public MovieGenderController(IMovieGenderBusiness movieGenderBusiness)
+        public MovieGenderController(IMovieGenderBusiness movieGenderBusiness, IMapper mapper)
         {
             _movieGenderBusiness = movieGenderBusiness;
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGenderMovieAsync(MovieGender movieGender)
+        public async Task<IActionResult> CreateGenderMovieAsync(MovieGenderModel movieGender)
         {
             if (movieGender == null)
             {
@@ -28,9 +32,8 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _movieGenderBusiness.CreateGenderMovieAsync(movieGender);
+                await _movieGenderBusiness.CreateGenderMovieAsync(_mapper.Map<MovieGender>(movieGender));
                 return Ok();
-
             }
             catch (Exception ex)
             {
@@ -57,22 +60,22 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.Select(m => _mapper.Map<MovieGenderModel>(m)));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetGenderMovieByIdAsync(Guid id)
         {
-            var result = await _movieGenderBusiness.GetGenderMovieByIdAsync(id); // se obtiene eel resultado 
-            if (result == null) //se valida si el resultado es nulo 
+            var result = await _movieGenderBusiness.GetGenderMovieByIdAsync(id); // se obtiene eel resultado
+            if (result == null) //se valida si el resultado es nulo
             {
                 return NotFound(); // no fue encontrado el valor
             }
-            return Ok(result);// si si devuelve Ok con el resultado
+            return Ok(_mapper.Map<MovieGenderModel>(result));// si si devuelve Ok con el resultado
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateGenderMovieByIdAsync(MovieGender movieGender)
+        public async Task<IActionResult> UpdateGenderMovieByIdAsync(MovieGenderModel movieGender)
         {
             if (movieGender == null)
             {
@@ -80,15 +83,13 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _movieGenderBusiness.UpdateGenderMovieByIdAsync(movieGender);
+                await _movieGenderBusiness.UpdateGenderMovieByIdAsync(_mapper.Map<MovieGender>(movieGender));
                 return Ok();
-
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-
         }
     }
 }

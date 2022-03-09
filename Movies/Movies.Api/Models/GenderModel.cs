@@ -1,6 +1,6 @@
-﻿namespace Movies.Entities
+﻿namespace Movies.Api.Models
 {
-    public class Gender : EntityBase
+    public class GenderModel : ModelBase
     {
         public string Name { get; set; }
         public string Description { get; set; }

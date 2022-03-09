@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
 using Movies.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Api.Controllers
@@ -12,14 +15,16 @@ namespace Movies.Api.Controllers
     public class GenderController : ControllerBase
     {
         private readonly IGenderBusiness _genderBusiness;
+        private readonly IMapper _mapper;
 
-        public GenderController(IGenderBusiness genderBusiness)
+        public GenderController(IGenderBusiness genderBusiness, IMapper mapper)
         {
             _genderBusiness = genderBusiness;
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGenderAsync(Gender gender)
+        public async Task<IActionResult> CreateGenderAsync(GenderModel gender)
         {
             if (gender == null)
             {
@@ -27,9 +32,8 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _genderBusiness.CreateGenderAsync(gender);
+                await _genderBusiness.CreateGenderAsync(_mapper.Map<Gender>(gender));
                 return Ok();
-
             }
             catch (Exception ex)
             {
@@ -56,11 +60,25 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.Select(g => _mapper.Map<GenderModel>(g)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetGenderByIdAsync(Guid id)
+        {
+            var result = await _genderBusiness.GetGenderByIdAsync(id);
+            return Ok(_mapper.Map<GenderModel>(result));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllGendersAsync()
+        {
+            var result = await _genderBusiness.GetAllGendersAsync();
+            return Ok(result.Select(g => _mapper.Map<GenderModel>(g)));
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateGenderByIdAsync(Gender gender)
+        public async Task<IActionResult> UpdateGenderByIdAsync(GenderModel gender)
         {
             if (gender == null)
             {
@@ -68,9 +86,8 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _genderBusiness.UpdateGenderByIdAsync(gender);
+                await _genderBusiness.UpdateGenderByIdAsync(_mapper.Map<Gender>(gender));
                 return Ok();
-
             }
             catch (Exception ex)
             {

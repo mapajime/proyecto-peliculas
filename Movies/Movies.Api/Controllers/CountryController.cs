@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Api.Models;
 using Movies.Business.Interfaces;
 using Movies.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Api.Controllers
@@ -12,20 +15,21 @@ namespace Movies.Api.Controllers
     public class CountryController : ControllerBase
     {
         private readonly ICountryBusiness _countryBusiness;
+        private readonly IMapper _mapper;
 
-        public CountryController(ICountryBusiness countryBusiness)
+        public CountryController(ICountryBusiness countryBusiness, IMapper mapper)
         {
             _countryBusiness = countryBusiness;
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCountryAsync(Country country)
+        public async Task<IActionResult> CreateCountryAsync(CountryModel country)
         {
             try
             {
-                await _countryBusiness.CreateCountryAsync(country);
+                await _countryBusiness.CreateCountryAsync(_mapper.Map<Country>(country));
                 return Ok();
-
             }
             catch (Exception ex)
             {
@@ -52,17 +56,17 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.Select(c => _mapper.Map<CountryModel>(c)));
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCountryByIdAsync(Country country)
+        public async Task<IActionResult> UpdateCountryByIdAsync(CountryModel country)
         {
             if (string.IsNullOrEmpty(country.Name))
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            await _countryBusiness.UpdateCountryByIdAsync(country);
+            await _countryBusiness.UpdateCountryByIdAsync(_mapper.Map<Country>(country));
             return Ok();
         }
     }

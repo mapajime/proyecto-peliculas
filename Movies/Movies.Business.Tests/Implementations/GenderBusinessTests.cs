@@ -92,6 +92,42 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
+        public async Task GetGenderByIdAsync_WhenIdGenderExist_ShouldReturnGender()
+        {
+            //Arrange
+            _mockGenderRepository.Setup(g => g.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(new Gender { Name = "Femenino" });
+            var genderBusiness = new GenderBusiness(_mockGenderRepository.Object);
+
+            //Act
+            var gender = await genderBusiness.GetGenderByIdAsync(Guid.Empty);
+
+            //Assert
+            Assert.NotNull(gender);
+            Assert.Equal("Femenino", gender.Name);
+        }
+
+        [Fact]
+        public async Task GetAllGendersAsync_WhenGendersExist_ShouldReturnAllGenders()
+        {
+            //Arrange
+            _mockGenderRepository.Setup(g => g.GetAllAsync())
+                .ReturnsAsync(new List<Gender> 
+                { 
+                    new Gender { Name="Femenino"},
+                    new Gender { Name="Masculino"},
+                });
+            var genderBusiness = new GenderBusiness(_mockGenderRepository.Object);
+
+            //Act
+            var genders = await genderBusiness.GetAllGendersAsync();
+
+            //Assert
+            Assert.NotNull(genders);
+            Assert.True(genders.Any());
+            Assert.Equal(2, genders.Count());
+        }
+
+        [Fact]
         public async Task UpdateGenderByIdAsync_WhenGenderIsNull_ShouldThrowArgumentNullException()
         {
             //Arrange
