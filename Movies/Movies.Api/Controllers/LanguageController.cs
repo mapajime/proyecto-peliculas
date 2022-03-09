@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Models;
 using Movies.Business.Interfaces;
+using Movies.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Api.Controllers
@@ -12,10 +15,12 @@ namespace Movies.Api.Controllers
     public class LanguageController : ControllerBase
     {
         private readonly ILanguageBusiness _languageBusiness;
+        private readonly IMapper _mapper;
 
-        public LanguageController(ILanguageBusiness languageBusiness)
+        public LanguageController(ILanguageBusiness languageBusiness, IMapper mapper)
         {
             _languageBusiness = languageBusiness;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -27,7 +32,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _languageBusiness.CreateLanguageAsync(language);
+                await _languageBusiness.CreateLanguageAsync(_mapper.Map<Language>(language));
                 return Ok();
             }
             catch (Exception ex)
@@ -59,7 +64,7 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.Select(l=> _mapper.Map<LanguageModel>(l)));
         }
 
         [HttpPut]
@@ -71,7 +76,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _languageBusiness.UpdateLanguageByIdAsync(language);
+                await _languageBusiness.UpdateLanguageByIdAsync(_mapper.Map<Language>(language));
                 return Ok();
             }
             catch (Exception ex)

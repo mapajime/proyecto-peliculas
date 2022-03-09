@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Models;
 using Movies.Business.Interfaces;
+using Movies.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Api.Controllers
@@ -12,10 +15,12 @@ namespace Movies.Api.Controllers
     public class ActorController : ControllerBase
     {
         private readonly IActorBusiness _actorBusiness;
+        private readonly IMapper _mapper;
 
-        public ActorController(IActorBusiness actorBusiness)
+        public ActorController(IActorBusiness actorBusiness, IMapper mapper)
         {
             _actorBusiness = actorBusiness;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -27,7 +32,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _actorBusiness.CreateActorAsync(actor);
+                await _actorBusiness.CreateActorAsync(_mapper.Map<Actor>(actor));
                 return Ok();
             }
             catch (Exception ex)
@@ -37,7 +42,11 @@ namespace Movies.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetActorsAsync() => Ok(await _actorBusiness.GetAllActorsAsync());
+        public async Task<IActionResult> GetActorsAsync()
+        {
+            var result = await _actorBusiness.GetAllActorsAsync();
+            return Ok(result.Select(a => _mapper.Map<ActorModel>(a)));
+        }
 
         [HttpGet("by-last-name/{lastName}")]
         public async Task<IActionResult> GetActorsByLastName(string lastName)
@@ -47,7 +56,7 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.Select(a=> _mapper.Map<ActorModel>(a)));
         }
 
         [HttpGet("{id:Guid}")]
@@ -58,7 +67,7 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(_mapper.Map<ActorModel>(result));
         }
 
         [HttpDelete("{id:Guid}")]
@@ -72,7 +81,11 @@ namespace Movies.Api.Controllers
         public async Task<IActionResult> GetActorCountAsync() => Ok(await _actorBusiness.GetActorCountAsync());
 
         [HttpGet]
-        public async Task<IActionResult> GetAllActorsAsync() => Ok(await _actorBusiness.GetAllActorsAsync());
+        public async Task<IActionResult> GetAllActorsAsync()
+        {
+            var result = await _actorBusiness.GetAllActorsAsync();
+            return Ok(result.Select(a => _mapper.Map<ActorModel>(a)));
+        }
 
         [HttpPut]
         public async Task<IActionResult> UpdateActorByIdAsync(ActorModel actor)
@@ -83,7 +96,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _actorBusiness.UpdateActorByIdAsync(actor);
+                await _actorBusiness.UpdateActorByIdAsync(_mapper.Map<Actor>(actor));
                 return Ok();
             }
             catch (Exception ex)

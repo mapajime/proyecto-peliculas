@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Models;
 using Movies.Business.Interfaces;
+using Movies.Entities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,10 +15,12 @@ namespace Movies.Api.Controllers
     public class MovieGenderController : ControllerBase
     {
         private readonly IMovieGenderBusiness _movieGenderBusiness;
+        private readonly IMapper _mapper;
 
-        public MovieGenderController(IMovieGenderBusiness movieGenderBusiness)
+        public MovieGenderController(IMovieGenderBusiness movieGenderBusiness, IMapper mapper)
         {
             _movieGenderBusiness = movieGenderBusiness;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -28,7 +32,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _movieGenderBusiness.CreateGenderMovieAsync(movieGender);
+                await _movieGenderBusiness.CreateGenderMovieAsync(_mapper.Map<MovieGender>(movieGender));
                 return Ok();
             }
             catch (Exception ex)
@@ -56,7 +60,7 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.Select(m => _mapper.Map<MovieGenderModel>(m)));
         }
 
         [HttpGet]
@@ -67,7 +71,7 @@ namespace Movies.Api.Controllers
             {
                 return NotFound(); // no fue encontrado el valor
             }
-            return Ok(result);// si si devuelve Ok con el resultado
+            return Ok(_mapper.Map<MovieGenderModel>(result));// si si devuelve Ok con el resultado
         }
 
         [HttpPut]
@@ -79,7 +83,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _movieGenderBusiness.UpdateGenderMovieByIdAsync(movieGender);
+                await _movieGenderBusiness.UpdateGenderMovieByIdAsync(_mapper.Map<MovieGender>(movieGender));
                 return Ok();
             }
             catch (Exception ex)

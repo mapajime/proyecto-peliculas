@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Models;
 using Movies.Business.Interfaces;
+using Movies.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Api.Controllers
@@ -12,10 +15,12 @@ namespace Movies.Api.Controllers
     public class GenderController : ControllerBase
     {
         private readonly IGenderBusiness _genderBusiness;
+        private readonly IMapper _mapper;
 
-        public GenderController(IGenderBusiness genderBusiness)
+        public GenderController(IGenderBusiness genderBusiness, IMapper mapper)
         {
             _genderBusiness = genderBusiness;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -27,7 +32,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _genderBusiness.CreateGenderAsync(gender);
+                await _genderBusiness.CreateGenderAsync(_mapper.Map<Gender>(gender));
                 return Ok();
             }
             catch (Exception ex)
@@ -55,7 +60,7 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.Select(g => _mapper.Map<GenderModel>(g)));
         }
 
         [HttpPut]
@@ -67,7 +72,7 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _genderBusiness.UpdateGenderByIdAsync(gender);
+                await _genderBusiness.UpdateGenderByIdAsync(_mapper.Map<Gender>(gender));
                 return Ok();
             }
             catch (Exception ex)

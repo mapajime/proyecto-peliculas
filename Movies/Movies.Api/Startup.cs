@@ -1,21 +1,16 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Movies.Api.Configuration;
 using Movies.Business.Implementations;
 using Movies.Business.Interfaces;
 using Movies.DataAccess.Context;
 using Movies.DataAccess.Repositories.Implementation;
 using Movies.DataAccess.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Movies.Api
 {
@@ -31,8 +26,10 @@ namespace Movies.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+            var mapperConfig = new MapperConfiguration(m => m.AddProfile(new MappingProfile()));
+            var mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
             services.AddDbContext<MovieContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("movies")));
             services.AddSwaggerGen();
             services.AddScoped<IActorRepository, ActorRepository>();
