@@ -93,6 +93,41 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
+        public async Task GetLanguageByIdAsync_WhenIdLanguageExist_ShouldReturnLanguges()
+        {
+            //Arrange
+            _mockLanguageRepository.Setup(l => l.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new Language { Name = "Ingles" }
+                );
+            var languageBusiness = new LanguageBusiness(_mockLanguageRepository.Object);
+
+            //Act
+            var language = await languageBusiness.GetLanguageByIdAsync(Guid.Empty);
+
+            //Assert
+            Assert.NotNull(language);
+            Assert.Equal("Ingles", language.Name);
+        }
+
+        [Fact]
+        public async Task GetAllLanguagesAsync_WhenLanguagesExist_ShouldReturnLanguages()
+        {
+            //Arrange
+            _mockLanguageRepository.Setup(l => l.GetAllAsync())
+                .ReturnsAsync(new List<Language> { new Language { Name = "Spanish" }, new Language { Name = "English" }, new Language { Name = "French" } });
+            var languageBusiness = new LanguageBusiness(_mockLanguageRepository.Object);
+
+            //Act
+            var languages = (await languageBusiness.GetAllLanguagesAsync()).ToList();
+
+            //Assert
+            Assert.NotNull(languages);
+            Assert.Equal(3, languages.Count);
+            Assert.Equal("English", languages[1].Name);
+            Assert.Equal("French", languages.Last().Name);
+        }
+
+        [Fact]
         public async Task UpdateLanguageByIdAsync_WhenLanguageIsNull_ShouldThrowArgumentNullExceptionl()
         {
             //Arrange

@@ -63,6 +63,20 @@ namespace Movies.Api.Controllers
             return Ok(result.Select(g => _mapper.Map<GenderModel>(g)));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetGenderByIdAsync(Guid id)
+        {
+            var result = await _genderBusiness.GetGenderByIdAsync(id);
+            return Ok(_mapper.Map<GenderModel>(result));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllGendersAsync()
+        {
+            var result = await _genderBusiness.GetAllGendersAsync();
+            return Ok(result.Select(g => _mapper.Map<GenderModel>(g)));
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateGenderByIdAsync(GenderModel gender)
         {

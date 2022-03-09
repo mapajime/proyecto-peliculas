@@ -22,6 +22,10 @@ namespace Movies.Business.Implementations
             await _genderRepository.AddAsync(gender);
         }
 
+        public async Task<Gender> GetGenderByIdAsync(Guid id) => await _genderRepository.GetByIdAsync(id);
+
+        public async Task<IEnumerable<Gender>> GetAllGendersAsync() => await _genderRepository.GetAllAsync();
+
         public async Task DeleteGenderAsync(Guid id) => await _genderRepository.DeleteAsync(id);
 
         public async Task<IEnumerable<Gender>> GetGenderByNameAsync(string name)

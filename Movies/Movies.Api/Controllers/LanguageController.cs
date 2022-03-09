@@ -64,7 +64,25 @@ namespace Movies.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(result.Select(l=> _mapper.Map<LanguageModel>(l)));
+            return Ok(result.Select(l => _mapper.Map<LanguageModel>(l)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetLanguagesByIdAsync(Guid id)
+        {
+            var result = await _languageBusiness.GetLanguageByIdAsync(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<LanguageModel>(result));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllLanguagesAsync()
+        {
+            var result = await _languageBusiness.GetAllLanguagesAsync();
+            return Ok(result.Select(l => _mapper.Map<LanguageModel>(l)));
         }
 
         [HttpPut]

@@ -14,5 +14,8 @@ namespace Movies.Business.Interfaces
          Task<IEnumerable<Gender>> GetGenderByNameAsync(string name);
 
         Task DeleteGenderAsync(Guid id);
+
+        Task<Gender> GetGenderByIdAsync(Guid id);
+        Task<IEnumerable<Gender>> GetAllGendersAsync();
     }
 }

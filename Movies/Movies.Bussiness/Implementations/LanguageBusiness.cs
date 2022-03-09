@@ -21,6 +21,10 @@ namespace Movies.Business.Implementations
         }
         public async Task DeleteLanguageAsync(Guid id) => await _languageRepository.DeleteAsync(id);
 
+
+        public async Task<Language> GetLanguageByIdAsync(Guid id) => await _languageRepository.GetByIdAsync(id);
+
+        public async Task<IEnumerable<Language>> GetAllLanguagesAsync() => await _languageRepository.GetAllAsync();
         public async Task<IEnumerable<Language>> GetLanguagesByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))

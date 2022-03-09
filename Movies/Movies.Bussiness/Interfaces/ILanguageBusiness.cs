@@ -14,5 +14,7 @@ namespace Movies.Business.Interfaces
         Task DeleteLanguageAsync(Guid id);
 
         Task<IEnumerable<Language>> GetLanguagesByNameAsync(string name);
+        Task<Language> GetLanguageByIdAsync(Guid id);
+        Task<IEnumerable<Language>> GetAllLanguagesAsync();
     }
 }
