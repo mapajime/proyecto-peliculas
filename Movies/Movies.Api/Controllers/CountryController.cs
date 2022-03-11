@@ -26,6 +26,10 @@ namespace Movies.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCountryAsync(CountryModel country)
         {
+            if (country == null)
+            {
+                return BadRequest();
+            }
             try
             {
                 await _countryBusiness.CreateCountryAsync(_mapper.Map<Country>(country));

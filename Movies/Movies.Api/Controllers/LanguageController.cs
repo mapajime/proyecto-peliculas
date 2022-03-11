@@ -55,10 +55,6 @@ namespace Movies.Api.Controllers
             {
                 return BadRequest();
             }
-            if (string.IsNullOrEmpty(name))
-            {
-                return BadRequest();
-            }
             var result = await _languageBusiness.GetLanguagesByNameAsync(name);
             if (result == null)
             {
