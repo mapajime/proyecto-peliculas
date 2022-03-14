@@ -118,22 +118,22 @@ namespace Movies.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetCountriesByNameAsync_WhenNameCountryIsNull_ShouldReturnNotFound()
+        public async Task GetCountriesByNameAsync_WhenNameCountryIsNotNullAndThereIsNoCountries_ShouldReturnNotFound()
         {
             //Arrange
             _mockCountryBusiness.Setup(c => c.GetCountriesByNameAsync(It.IsAny<string>()))
-            .ReturnsAsync(new List<Country> { new Country { Name = "Mexico" } });
+            .ReturnsAsync((List<Country>)null);
             var countryController = new CountryController(_mockCountryBusiness.Object, _mapper);
 
             //Act
-            var actionResult = await countryController.GetCountriesByNameAsync(null);
+            var actionResult = await countryController.GetCountriesByNameAsync("Mexico");
 
             //Assert
             Assert.NotNull(actionResult);
             var result = actionResult as NotFoundResult;
             Assert.NotNull(result);
 
-            _mockCountryBusiness.Verify(c => c.GetCountriesByNameAsync(It.IsAny<string>()), Times.Never);
+            _mockCountryBusiness.Verify(c => c.GetCountriesByNameAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -146,15 +146,16 @@ namespace Movies.Api.Tests.Controllers
 
             //Act
             var actionResult = await countryController.GetCountriesByNameAsync("Mexico");
-
+            
             //Assert
             Assert.NotNull(actionResult);
             var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
             var list = (result.Value as IEnumerable<CountryModel>)?.ToList();
             Assert.NotNull(list);
-            Assert.Equal("Mexico", result.Value.ToString());
-            //Assert.Equal(2, result.Value.Count);
+            Assert.Equal("Mexico", list[0].Name);
+            Assert.Contains(list, c => c.Name == "Europa");
+            Assert.Equal(2, list.Count);
             _mockCountryBusiness.Verify(c => c.GetCountriesByNameAsync(It.IsAny<string>()), Times.Once);
         }
 

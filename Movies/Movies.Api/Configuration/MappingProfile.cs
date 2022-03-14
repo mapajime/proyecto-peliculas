@@ -13,7 +13,7 @@ namespace Movies.Api.Configuration
             CreateMap<CountryModel, Country>();
             CreateMap<Country, CountryModel>();
             CreateMap<GenderModel, Gender>();
-            CreateMap<GenderModel, Gender>();
+            CreateMap<Gender, GenderModel>();
             CreateMap<LanguageModel, Language>();
             CreateMap<Language, LanguageModel>();
             CreateMap<MovieModel, Movie>()

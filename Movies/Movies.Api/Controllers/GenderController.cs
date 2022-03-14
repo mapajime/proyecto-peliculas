@@ -56,7 +56,7 @@ namespace Movies.Api.Controllers
                 return BadRequest();
             }
             var result = await _genderBusiness.GetGenderByNameAsync(name);
-            if (result == null)
+            if (result == null || !result.Any())
             {
                 return NotFound();
             }

@@ -70,7 +70,7 @@ namespace Movies.Api.Controllers
                 return BadRequest();
             }
             var result = await _movieBusiness.GetMoviesByNameAsync(name);
-            if (result == null)
+            if (result == null || !result.Any())
             {
                 return NotFound();
             }

@@ -160,21 +160,22 @@ namespace Movies.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetMoviesByNameAsync_WhenNameIsNull_ShouldReturnNotFound()
+        public async Task GetMoviesByNameAsync_WhenNameIsNotNullAndThereIsNoMoviesWithName_ShouldReturnNotFound()
         {
             //Arrange
-            _mockMovieBusiness.Setup(m => m.GetMoviesByNameAsync(It.IsAny<string>()));
+            _mockMovieBusiness.Setup(m => m.GetMoviesByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync(Enumerable.Empty<Movie>());
             var movieController = new MovieController(_mockMovieBusiness.Object, _mapper);
 
             //Act
-            var actionResult = await movieController.GetMoviesByNameAsync(null);
+            var actionResult = await movieController.GetMoviesByNameAsync("Crepusculo");
 
             //Assert
             Assert.NotNull(actionResult);
             var result = actionResult as NotFoundResult;
             Assert.NotNull(result);
 
-            _mockMovieBusiness.Verify(m => m.GetMoviesByNameAsync(It.IsAny<string>()), Times.Never());
+            _mockMovieBusiness.Verify(m => m.GetMoviesByNameAsync(It.IsAny<string>()), Times.Once());
         }
 
         [Fact]
@@ -186,7 +187,7 @@ namespace Movies.Api.Tests.Controllers
             var movieController = new MovieController(_mockMovieBusiness.Object, _mapper);
 
             //Act
-            var actionResult = await movieController.GetMoviesByNameAsync(String.Empty);
+            var actionResult = await movieController.GetMoviesByNameAsync("Ghost");
 
             //Assert
             Assert.NotNull(actionResult);

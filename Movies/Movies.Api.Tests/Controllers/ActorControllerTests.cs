@@ -104,20 +104,39 @@ namespace Movies.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetActorsByLastName_WhenLastNameActorIsNull_ShouldReturnNotFound()
+        public async Task GetActorsByLastName_WhenLastNameActorIsNull_ShouldReturnBadRequest()
         {
             //Arrange
-            _mockActorBusiness.Setup(a => a.GetActorByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new Actor { FirstName = "Ana" });
             var actorController = new ActorController(_mockActorBusiness.Object, _mapper);
 
             //Act
-            var actionResult = await actorController.GetActorById(Guid.Empty);
+            var actionresult = await actorController.GetActorsByLastName(null);
+
+            //Assert
+            Assert.NotNull(actionresult);
+            var result = actionresult as BadRequestResult;
+            Assert.NotNull(result);
+
+            _mockActorBusiness.Verify(a =>a.GetActorByLastNameAsync(It.IsAny<string>()), Times.Never());
+        }
+
+        [Fact]
+        public async Task GetActorsByLastName_WhenLastNameIsNotNullAndThereIsNotActorsWithLastName_ShouldReturnNotFound()
+        {
+            //Arrange
+            _mockActorBusiness.Setup(a => a.GetActorByLastNameAsync(It.IsAny<string>()))
+            .ReturnsAsync(null as IEnumerable<Actor>);
+            var actorController = new ActorController(_mockActorBusiness.Object, _mapper);  
+
+            //Act
+            var actionResult = await actorController.GetActorsByLastName("Ana");
 
             //Assert
             Assert.NotNull(actionResult);
             var result = actionResult as NotFoundResult;
             Assert.NotNull(result);
+
+            _mockActorBusiness.Verify(a => a.GetActorByLastNameAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -135,15 +154,19 @@ namespace Movies.Api.Tests.Controllers
             Assert.NotNull(actionResult);
             var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
+            var list = (result.Value as IEnumerable<ActorModel>)?.ToList();
+            Assert.NotNull(list);
+            Assert.Equal(1, list.Count);
+            Assert.Contains(list, a => a.FirstName == "Ana");
             _mockActorBusiness.Verify(a => a.GetActorByLastNameAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
-        public async Task GetActorById_WhenIdActorIsNull_ShouldReturnNotFound()
+        public async Task GetActorById_WhenIdActorIsEmpty_ShouldReturnNotFound()
         {
             //Arrange
             _mockActorBusiness.Setup(a => a.GetActorByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Actor());
+                .ReturnsAsync((Actor)null);
             var actorController = new ActorController(_mockActorBusiness.Object, _mapper);
 
             //Act
@@ -171,6 +194,9 @@ namespace Movies.Api.Tests.Controllers
             Assert.NotNull(actionResult);
             var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
+            var actor = result.Value as ActorModel;
+            Assert.NotNull(actor);
+            Assert.Equal("Pepe", actor.FirstName);
             _mockActorBusiness.Verify(a => a.GetActorByIdAsync(It.IsAny<Guid>()), Times.Once);
         }
 
@@ -214,7 +240,7 @@ namespace Movies.Api.Tests.Controllers
         {
             //Arrange
             _mockActorBusiness.Setup(a => a.GetAllActorsAsync())
-                .ReturnsAsync(new List<Actor> { new Actor { LastName = "Luis" }, new Actor { FirstName = "Julio", LastName = "Lopez" } });
+                .ReturnsAsync(new List<Actor> { new Actor { FirstName = "Luis" }, new Actor { FirstName = "Julio", LastName = "Lopez" } });
             var actorController = new ActorController(_mockActorBusiness.Object, _mapper);
 
             //Act
@@ -228,7 +254,7 @@ namespace Movies.Api.Tests.Controllers
             Assert.NotNull(list);
             Assert.Equal("Luis", list[0].FirstName);
             Assert.Equal("Julio", list.Last().FirstName);
-            //Assert.Equal("Lopez", list.Last().LastName)
+            Assert.Equal("Lopez", list.Last().LastName);
             Assert.Equal(2, list.Count);
 
             _mockActorBusiness.Verify(a => a.GetAllActorsAsync(), Times.Once);

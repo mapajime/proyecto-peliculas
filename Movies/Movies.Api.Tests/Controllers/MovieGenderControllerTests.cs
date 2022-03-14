@@ -114,21 +114,20 @@ namespace Movies.Api.Tests.Controllers
             Assert.NotNull(actionResult);
             var result = actionResult as BadRequestResult;
             Assert.NotNull(result);
-            var list = (result as IEnumerable<MovieGender>).ToList();
-            Assert.NotNull(list);
-            _mockMovieGenderBusiness.Verify(mg => mg.GetGenderMovieByNameAsync(It.IsAny<string>()), Times.Once);
+
+            _mockMovieGenderBusiness.Verify(mg => mg.GetGenderMovieByNameAsync(It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
-        public async Task GetGenderMovieByNameAsync_WhenNameMovieGenderIsNull_ShouldReturnNotFound()
+        public async Task GetGenderMovieByNameAsync_WhenNameMovieGenderIsNotNullAndThereIsNoGenders_ShouldReturnNotFound()
         {
             //Arrange
             _mockMovieGenderBusiness.Setup(mg => mg.GetGenderMovieByNameAsync(It.IsAny<string>()))
-            .ReturnsAsync(new List<MovieGender> { new MovieGender { Name = "Suspenso" } });
+            .ReturnsAsync((IEnumerable<MovieGender>)null);
             var movieGenderController = new MovieGenderController(_mockMovieGenderBusiness.Object, _mapper);
 
             //Act
-            var actionResult = await movieGenderController.GetGenderMovieByNameAsync(string.Empty);
+            var actionResult = await movieGenderController.GetGenderMovieByNameAsync("Accion");
 
             //Assert
             Assert.NotNull(actionResult);
@@ -159,7 +158,7 @@ namespace Movies.Api.Tests.Controllers
         {
             //Arrange
             _mockMovieGenderBusiness.Setup(mg => mg.GetGenderMovieByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new MovieGender());
+                .ReturnsAsync((MovieGender)null);
             var movieGenderController = new MovieGenderController(_mockMovieGenderBusiness.Object, _mapper);
 
             //Act

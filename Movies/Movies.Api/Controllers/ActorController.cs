@@ -51,8 +51,12 @@ namespace Movies.Api.Controllers
         [HttpGet("by-last-name/{lastName}")]
         public async Task<IActionResult> GetActorsByLastName(string lastName)
         {
+            if (string.IsNullOrEmpty(lastName))
+            {
+                return BadRequest();
+            }
             var result = await _actorBusiness.GetActorByLastNameAsync(lastName);
-            if (result == null)
+            if (result == null || !result.Any())
             {
                 return NotFound();
             }

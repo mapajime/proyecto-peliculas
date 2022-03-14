@@ -118,22 +118,22 @@ namespace Movies.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetGenderByNameAsync_WhenNameGenderIsNull_ShouldReturnNotFound()
+        public async Task GetGenderByNameAsync_WhenNameGenderIsNotNullAndTherIsNoGender_ShouldReturnNotFound()
         {
             //Arrange
             _mockGenderBusiness.Setup(g => g.GetGenderByNameAsync(It.IsAny<string>()))
-            .ReturnsAsync(new List<Gender> { new Gender { Name = "Masculino" } });
+            .ReturnsAsync(Enumerable.Empty<Gender>());
             var genderController = new GenderController(_mockGenderBusiness.Object, _mapper);
 
             //Act
-            var actionResult = await genderController.GetGenderByNameAsync(null);
+            var actionResult = await genderController.GetGenderByNameAsync("Masculino");
 
             //Assert
             Assert.NotNull(actionResult);
             var result = actionResult as NotFoundResult;
             Assert.NotNull(result);
 
-            _mockGenderBusiness.Verify(g => g.GetGenderByNameAsync(It.IsAny<string>()), Times.Never);
+            _mockGenderBusiness.Verify(g => g.GetGenderByNameAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -153,8 +153,9 @@ namespace Movies.Api.Tests.Controllers
             Assert.NotNull(result);
             var list = (result.Value as IEnumerable<GenderModel>)?.ToList();
             Assert.NotNull(list);
-            Assert.Equal("Femenino", result.Value.ToString());
-            //Assert.Equal(2, result.Value.Count);
+            Assert.Equal(2, list.Count);
+            Assert.Equal("Femenino", list.First().Name);
+            Assert.Contains(list, g => g.Name == "Masculino");
             _mockGenderBusiness.Verify(g => g.GetGenderByNameAsync(It.IsAny<string>()), Times.Once);
         }
 
@@ -238,7 +239,8 @@ namespace Movies.Api.Tests.Controllers
         public async Task UpdateGenderByIdAsync_WhenGenderIsEmpty_ShouldReturnInternalServerError()
         {
             //Arrange
-            _mockGenderBusiness.Setup(g => g.UpdateGenderByIdAsync(It.IsAny<Gender>()));
+            _mockGenderBusiness.Setup(g => g.UpdateGenderByIdAsync(It.IsAny<Gender>()))
+                .ThrowsAsync(new Exception("Error Prueba"));
             var genderController = new GenderController(_mockGenderBusiness.Object, _mapper);
 
             //Act
@@ -246,10 +248,12 @@ namespace Movies.Api.Tests.Controllers
 
             //Assert
             Assert.NotNull(actionResult);
-            var rersult = actionResult as StatusCodeResult;
-            Assert.NotNull(rersult);
+            var result = actionResult as ObjectResult;
+            Assert.NotNull(result);
+            Assert.Equal(500, result.StatusCode);
+            Assert.Equal("Error Prueba", result.Value.ToString());
 
-            _mockGenderBusiness.Verify(g => g.UpdateGenderByIdAsync(It.IsAny<Gender>()), Times.Never);
+            _mockGenderBusiness.Verify(g => g.UpdateGenderByIdAsync(It.IsAny<Gender>()), Times.Once);
         }
     }
 }

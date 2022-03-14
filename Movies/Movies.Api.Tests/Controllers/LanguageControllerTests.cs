@@ -103,7 +103,7 @@ namespace Movies.Api.Tests.Controllers
         {
             //Arrange
             _mockLanguageBusiness.Setup(l => l.GetLanguagesByNameAsync(It.IsAny<string>()))
-            .ReturnsAsync(new List<Language> { new Language { Name = "Español" } });
+            .ReturnsAsync(new List<Language> { new Language () });
             var languageController = new LanguageController(_mockLanguageBusiness.Object, _mapper);
 
             //Act
@@ -111,7 +111,7 @@ namespace Movies.Api.Tests.Controllers
 
             //Assert
             Assert.NotNull(actionResult);
-            var result = actionResult as NotFoundResult;
+            var result = actionResult as BadRequestResult;
             Assert.NotNull(result);
         }
 
@@ -156,11 +156,11 @@ namespace Movies.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetLanguagesByIdAsync_WhenIdLanguageIsNull_ShouldReturnNotFound()
+        public async Task GetLanguagesByIdAsync_WhenIdLanguageIsNotNullAndThereIsNoLanguage_ShouldReturnNotFound()
         {
             //Arrange
             _mockLanguageBusiness.Setup(l => l.GetLanguageByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Language());
+                .ReturnsAsync((Language)null);
             var languageController = new LanguageController(_mockLanguageBusiness.Object, _mapper);
 
             //Act
