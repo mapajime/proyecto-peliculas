@@ -7,7 +7,7 @@ namespace Movies.Business.Interfaces
 {
     public interface ICountryBusiness
     {
-        Task CreateCountryAsync(Country country);
+        Task<Country> CreateCountryAsync(Country country);
 
         Task UpdateCountryByIdAsync(Country country);
 

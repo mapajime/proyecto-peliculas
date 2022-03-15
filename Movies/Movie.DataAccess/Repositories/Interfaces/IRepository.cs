@@ -10,6 +10,8 @@ namespace Movies.DataAccess.Repositories.Interfaces
     {
         Task<bool> AddAsync(TEntity entity);
 
+        Task<IEnumerable<TEntity>> GetRangeByIdsAsync(IEnumerable<Guid> ids);
+
         Task<IEnumerable<TEntity>> GetAllAsync();
 
         Task<bool> UpdateAsync(TEntity entity);

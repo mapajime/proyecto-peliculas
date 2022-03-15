@@ -24,16 +24,16 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCountryAsync(CountryModel country)
+        public async Task<IActionResult> CreateCountryAsync(CountryModel countryModel)
         {
-            if (country == null)
+            if (countryModel == null)
             {
                 return BadRequest();
             }
             try
             {
-                await _countryBusiness.CreateCountryAsync(_mapper.Map<Country>(country));
-                return Ok();
+                var country = await _countryBusiness.CreateCountryAsync(_mapper.Map<Country>(countryModel));
+                return Ok(_mapper.Map<CountryModel>(country));
             }
             catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace Movies.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("by-name/{name}")]
+        [HttpGet("by-name/{nameCountry}")]
         public async Task<IActionResult> GetCountriesByNameAsync(string nameCountry)
         {
             if (string.IsNullOrEmpty(nameCountry))
@@ -56,7 +56,7 @@ namespace Movies.Api.Controllers
                 return BadRequest();
             }
             var result = await _countryBusiness.GetCountriesByNameAsync(nameCountry);
-            if (result == null)
+            if (result == null || !result.Any())
             {
                 return NotFound();
             }

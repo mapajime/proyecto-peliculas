@@ -90,7 +90,7 @@ namespace Movies.Api.Tests.Controllers
             var actorController = new ActorController(_mockActorBusiness.Object, _mapper);
 
             //Act
-            var actionResult = await actorController.GetAllActorsAsync();
+            var actionResult = await actorController.GetActorsAsync();
 
             //Assert
             Assert.NotNull(actionResult);
@@ -244,7 +244,7 @@ namespace Movies.Api.Tests.Controllers
             var actorController = new ActorController(_mockActorBusiness.Object, _mapper);
 
             //Act
-            var actionResult = await actorController.GetAllActorsAsync();
+            var actionResult = await actorController.GetActorsAsync();
 
             //Assert
             Assert.NotNull(actionResult);

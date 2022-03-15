@@ -7,7 +7,7 @@ namespace Movies.Business.Interfaces
 {
     public interface IActorBusiness
     {
-        Task CreateActorAsync(Actor actor);
+        Task<Actor> CreateActorAsync(Actor actor);
 
         Task UpdateActorByIdAsync(Actor actor);
 

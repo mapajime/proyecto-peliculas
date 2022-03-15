@@ -16,15 +16,17 @@ namespace Movies.Business.Implementations
             _actorRepository = repository;
         }
 
-        public async Task CreateActorAsync(Actor actor)
+        public async Task<Actor> CreateActorAsync(Actor actor)
         {
             ValidateActor(actor);
             await _actorRepository.AddAsync(actor);
+            return actor;
         }
 
         public async Task DeleteActorAsync(Guid id) => await _actorRepository.DeleteAsync(id);
 
         public async Task<Actor> GetActorByIdAsync(Guid id) => await _actorRepository.GetByIdAsync(id);
+
         public async Task<int> GetActorCountAsync() => await _actorRepository.CountAsync();
 
         public async Task<IEnumerable<Actor>> GetActorByLastNameAsync(string lastName)
@@ -48,7 +50,7 @@ namespace Movies.Business.Implementations
         {
             if (actor == null)
             {
-                throw new ArgumentNullException(nameof(actor),"The actor is null");
+                throw new ArgumentNullException(nameof(actor), "The actor is null");
             }
             if (string.IsNullOrEmpty(actor.FirstName) || string.IsNullOrEmpty(actor.LastName))
             {
@@ -59,6 +61,5 @@ namespace Movies.Business.Implementations
                 throw new ArgumentException("The DateofBirth is null");
             }
         }
-
     }
 }

@@ -31,6 +31,15 @@ namespace Movies.DataAccess.Repositories.Implementation
             return await _movieContext.SaveChangesAsync() > 0;
         }
 
+        public async Task<IEnumerable<TEntity>> GetRangeByIdsAsync(IEnumerable<Guid> ids)
+        {
+            if (ids == null || !ids.Any())
+            {
+                return Enumerable.Empty<TEntity>();
+            }
+            return _entities.Where(t => ids.Contains(t.Id));
+        }
+
         public async Task<int> CountAsync() => await _entities.CountAsync();
 
         public async Task<bool> DeleteAsync(Guid id)

@@ -63,7 +63,7 @@ namespace Movies.Api.Controllers
             return Ok(result.Select(l => _mapper.Map<LanguageModel>(l)));
         }
 
-        [HttpGet]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetLanguagesByIdAsync(Guid id)
         {
             var result = await _languageBusiness.GetLanguageByIdAsync(id);

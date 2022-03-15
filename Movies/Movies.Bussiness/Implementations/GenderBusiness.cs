@@ -16,10 +16,11 @@ namespace Movies.Business.Implementations
             _genderRepository = repository;
         }
 
-        public async Task CreateGenderAsync(Gender gender)
+        public async Task<Gender> CreateGenderAsync(Gender gender)
         {
             ValidateGender(gender);
             await _genderRepository.AddAsync(gender);
+            return gender;
         }
 
         public async Task<Gender> GetGenderByIdAsync(Guid id) => await _genderRepository.GetByIdAsync(id);
