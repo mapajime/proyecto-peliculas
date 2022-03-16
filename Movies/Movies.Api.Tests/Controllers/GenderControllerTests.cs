@@ -47,7 +47,7 @@ namespace Movies.Api.Tests.Controllers
         public async Task CreateGenderAsync_WhenGenderIsNotNull_ShouldReturnOK()
         {
             //Arrange
-            _mockGenderBusiness.Setup(g => g.CreateGenderAsync(It.IsAny<Gender>()));
+            _mockGenderBusiness.Setup(g => g.CreateGenderAsync(It.IsAny<Gender>())).ReturnsAsync(new Gender { Name = "Masculino" });
             var genderController = new GenderController(_mockGenderBusiness.Object, _mapper);
 
             //Act
@@ -55,8 +55,11 @@ namespace Movies.Api.Tests.Controllers
 
             //Assert
             Assert.NotNull(actionResult);
-            var result = actionResult as OkResult;
+            var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
+            var genderModel = result.Value as GenderModel;
+            Assert.NotNull(genderModel);
+            Assert.Equal("Masculino", genderModel.Name);
 
             _mockGenderBusiness.Verify(g => g.CreateGenderAsync(It.IsAny<Gender>()), Times.Once());
         }

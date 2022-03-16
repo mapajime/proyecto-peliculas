@@ -47,7 +47,7 @@ namespace Movies.Api.Tests.Controllers
         public async Task CreateLanguageAsync_WhenLanguageIsNotNull_ShouldReturnOK()
         {
             //Arrange
-            _mockLanguageBusiness.Setup(l => l.CreateLanguageAsync(It.IsAny<Language>()));
+            _mockLanguageBusiness.Setup(l => l.CreateLanguageAsync(It.IsAny<Language>())).ReturnsAsync(new Language { Name="Ingles"});
             var languageController = new LanguageController(_mockLanguageBusiness.Object, _mapper);
 
             //Act
@@ -55,8 +55,11 @@ namespace Movies.Api.Tests.Controllers
 
             //Assert
             Assert.NotNull(actionResult);
-            var result = actionResult as OkResult;
+            var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
+            var language = result.Value as LanguageModel;
+            Assert.NotNull(language);
+            Assert.Equal("Ingles", language.Name);
 
             _mockLanguageBusiness.Verify(l => l.CreateLanguageAsync(It.IsAny<Language>()), Times.Once());
         }

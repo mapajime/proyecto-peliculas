@@ -32,8 +32,8 @@ namespace Movies.Api.Controllers
             }
             try
             {
-                await _movieGenderBusiness.CreateGenderMovieAsync(_mapper.Map<MovieGender>(movieGender));
-                return Ok();
+                var movieG = await _movieGenderBusiness.CreateGenderMovieAsync(_mapper.Map<MovieGender>(movieGender));
+                return Ok(_mapper.Map<MovieGenderModel>(movieG));
             }
             catch (Exception ex)
             {

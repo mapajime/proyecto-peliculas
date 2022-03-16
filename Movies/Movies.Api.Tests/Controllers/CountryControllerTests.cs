@@ -47,7 +47,7 @@ namespace Movies.Api.Tests.Controllers
         public async Task CreateCountryAsync_WhenCountryIsNotNull_ShouldReturnOK()
         {
             //Arrange
-            _mockCountryBusiness.Setup(c => c.CreateCountryAsync(It.IsAny<Country>()));
+            _mockCountryBusiness.Setup(c => c.CreateCountryAsync(It.IsAny<Country>())).ReturnsAsync(new Country { Name = "Colombia" });
             var countryController = new CountryController(_mockCountryBusiness.Object, _mapper);
 
             //Act
@@ -55,8 +55,11 @@ namespace Movies.Api.Tests.Controllers
 
             //Assert
             Assert.NotNull(actionResult);
-            var result = actionResult as OkResult;
+            var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
+            var countryModel = result.Value as CountryModel;
+            Assert.NotNull(countryModel);
+            Assert.Equal("Colombia", countryModel.Name);
 
             _mockCountryBusiness.Verify(c => c.CreateCountryAsync(It.IsAny<Country>()), Times.Once());
         }
@@ -146,7 +149,7 @@ namespace Movies.Api.Tests.Controllers
 
             //Act
             var actionResult = await countryController.GetCountriesByNameAsync("Mexico");
-            
+
             //Assert
             Assert.NotNull(actionResult);
             var result = actionResult as OkObjectResult;

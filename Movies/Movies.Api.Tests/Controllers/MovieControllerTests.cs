@@ -46,7 +46,7 @@ namespace Movies.Api.Tests.Controllers
         public async Task CreateMovieAsync_WhenMovieIsNotNull_ShouldReturnOK()
         {
             //Arrange
-            _mockMovieBusiness.Setup(m => m.CreateMovieAsync(It.IsAny<Movie>()));
+            _mockMovieBusiness.Setup(m => m.CreateMovieAsync(It.IsAny<Movie>())).ReturnsAsync(new Movie { Name="Ghost"});
             var movieController = new MovieController(_mockMovieBusiness.Object, _mapper);
 
             //Act
@@ -54,8 +54,11 @@ namespace Movies.Api.Tests.Controllers
 
             //Assert
             Assert.NotNull(actionResult);
-            var result = actionResult as OkResult;
+            var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
+            var movie = result.Value as MovieModel;
+            Assert.NotNull(movie);
+            Assert.Equal("Ghost", movie.Name);
 
             _mockMovieBusiness.Verify(m => m.CreateMovieAsync(It.IsAny<Movie>()), Times.Once());
         }

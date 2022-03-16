@@ -8,7 +8,6 @@ using Movies.Business.Interfaces;
 using Movies.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -44,10 +43,10 @@ namespace Movies.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task CreateGenderMovieAsync_WhenMoviegenderIsNotNull_ShouldReturnOK()
+        public async Task CreateGenderMovieAsync_WhenMovieGenderIsNotNull_ShouldReturnOK()
         {
             //Arrange
-            _mockMovieGenderBusiness.Setup(mg => mg.CreateGenderMovieAsync(It.IsAny<MovieGender>()));
+            _mockMovieGenderBusiness.Setup(mg => mg.CreateGenderMovieAsync(It.IsAny<MovieGender>())).ReturnsAsync(new MovieGender { Name = "Accion" });
             var movieGenderController = new MovieGenderController(_mockMovieGenderBusiness.Object, _mapper);
 
             //Act
@@ -55,12 +54,14 @@ namespace Movies.Api.Tests.Controllers
 
             //Assert
             Assert.NotNull(actionResult);
-            var result = actionResult as OkResult;
+            var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
+            var movieGender = result.Value as MovieGenderModel;
+            Assert.NotNull(movieGender);
+            Assert.Equal("Accion", movieGender.Name);
 
             _mockMovieGenderBusiness.Verify(mg => mg.CreateGenderMovieAsync(It.IsAny<MovieGender>()), Times.Once());
         }
-
 
         [Fact]
         public async Task CreateGenderMovieAsync_WhenErrorOccurs_ShouldReturnInternalServerError()

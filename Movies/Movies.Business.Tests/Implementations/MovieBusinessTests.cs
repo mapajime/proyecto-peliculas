@@ -13,17 +13,19 @@ namespace Movies.Business.Tests.Implementations
     public class MovieBusinessTests
     {
         private readonly Mock<IMovieRepository> _mockMovieRepository;
+        private readonly Mock<IActorRepository> _actorRepository;
 
         public MovieBusinessTests()
         {
             _mockMovieRepository = new Mock<IMovieRepository>();
+            _actorRepository = new Mock<IActorRepository>();
         }
 
         [Fact]
         public async Task CreateMovieAsync_WhenMovieIsNull_ShouldThrowArgumentNullException()
         {
             //Arrange
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
 
             //Assert
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => movieBusiness.CreateMovieAsync(null));
@@ -35,7 +37,7 @@ namespace Movies.Business.Tests.Implementations
         public async Task CreateMovieAsync_WhenMovieNameIsEmpty_ShouldThrowNullReferenceException()
         {
             //Arrage
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
             //assert
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() => movieBusiness.CreateMovieAsync(new Movie
             {
@@ -55,7 +57,7 @@ namespace Movies.Business.Tests.Implementations
         public async Task CreateMovieAsync_WhenCastMovieIsNull_ShouldThrowArgumentException()
         {
             //Arrage
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
             //assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => movieBusiness.CreateMovieAsync(new Movie
             {
@@ -72,7 +74,7 @@ namespace Movies.Business.Tests.Implementations
         public async Task CreateMovieAsync_WhenDirectorMovieIsEmpty_ShouldThrowArgumentException()
         {
             //Arrage
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
             //assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => movieBusiness.CreateMovieAsync(new Movie
             {
@@ -94,7 +96,7 @@ namespace Movies.Business.Tests.Implementations
         {
             //Arrenge
             _mockMovieRepository.Setup(e => e.AddAsync(It.IsAny<Movie>())).ReturnsAsync(true);
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
 
             //Act
             await movieBusiness.CreateMovieAsync(new Movie
@@ -115,7 +117,7 @@ namespace Movies.Business.Tests.Implementations
         public async Task DeleteMovieByIdAsync_WhenIdMovieExist_ShouldDeleteMovie()
         {
             //Arrange
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object,_actorRepository.Object);
 
             //Act
             await movieBusiness.DeleteMovieAsync(Guid.Empty);
@@ -139,7 +141,7 @@ namespace Movies.Business.Tests.Implementations
                     new Actor { FirstName = "Gary", LastName = "Sinise" }
                     }
                 }});
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
 
             //Act
             var movies = (await movieBusiness.GetAllMoviesAsync()).ToList();
@@ -170,7 +172,7 @@ namespace Movies.Business.Tests.Implementations
                     }
                     });
 
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
 
             // Act
             var movie = await movieBusiness.GetMovieByIdAsync(Guid.Empty);
@@ -186,7 +188,7 @@ namespace Movies.Business.Tests.Implementations
         public async Task GetMoviesByNameAsync_WhenNameMovieIsNull_ShouldReturnNull()
         {
             //Arrange
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
 
             //Act
             var movies = await movieBusiness.GetMoviesByNameAsync(null);
@@ -209,7 +211,7 @@ namespace Movies.Business.Tests.Implementations
                     new Actor { FirstName = "gary", LastName = "sinise" }
                     }
                  } });
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
 
             //Act
             var movies = (await movieBusiness.GetMoviesByNameAsync("ForestGump")).ToList();
@@ -229,7 +231,7 @@ namespace Movies.Business.Tests.Implementations
             //Arrange
             _mockMovieRepository.Setup(f => f.CountAsync())
               .ReturnsAsync(2);
-            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object);
+            var movieBusiness = new MovieBusiness(_mockMovieRepository.Object, _actorRepository.Object);
 
             //Act
             var totalMovies = await movieBusiness.GetNumberOfMoviesAsync();

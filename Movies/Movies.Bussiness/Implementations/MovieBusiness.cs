@@ -19,12 +19,13 @@ namespace Movies.Business.Implementations
             _actorRepository = actorRepository;
         }
 
-        public async Task CreateMovieAsync(Movie movie)
+        public async Task<Movie> CreateMovieAsync(Movie movie)
         {
             ValidateMovie(movie);
             var cast = await _actorRepository.GetRangeByIdsAsync(movie.Cast.Select(c => c.Id));
             movie.Cast = cast.ToList();
             await _repository.AddAsync(movie);
+            return movie;
         }
 
         public async Task DeleteMovieAsync(Guid id) => await _repository.DeleteAsync(id);

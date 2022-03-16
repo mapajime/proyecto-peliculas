@@ -47,7 +47,8 @@ namespace Movies.Api.Tests.Controllers
         public async Task CreateActorAsync_WhenActorIsNotNull_ShouldReturnOK()
         {
             //Arrange
-            _mockActorBusiness.Setup(a => a.CreateActorAsync(It.IsAny<Actor>()));
+            _mockActorBusiness.Setup(a => a.CreateActorAsync(It.IsAny<Actor>()))
+                .ReturnsAsync(new Actor { FirstName = "Ana" });
             var actorController = new ActorController(_mockActorBusiness.Object, _mapper);
 
             //Act
@@ -55,8 +56,11 @@ namespace Movies.Api.Tests.Controllers
 
             //Assert
             Assert.NotNull(actionResult);
-            var result = actionResult as OkResult;
+            var result = actionResult as OkObjectResult;
             Assert.NotNull(result);
+            var actorModel = result.Value as ActorModel;
+            Assert.NotNull(actorModel);
+            Assert.Equal("Ana", actorModel.FirstName);
 
             _mockActorBusiness.Verify(a => a.CreateActorAsync(It.IsAny<Actor>()), Times.Once());
         }
@@ -117,7 +121,7 @@ namespace Movies.Api.Tests.Controllers
             var result = actionresult as BadRequestResult;
             Assert.NotNull(result);
 
-            _mockActorBusiness.Verify(a =>a.GetActorByLastNameAsync(It.IsAny<string>()), Times.Never());
+            _mockActorBusiness.Verify(a => a.GetActorByLastNameAsync(It.IsAny<string>()), Times.Never());
         }
 
         [Fact]
@@ -126,7 +130,7 @@ namespace Movies.Api.Tests.Controllers
             //Arrange
             _mockActorBusiness.Setup(a => a.GetActorByLastNameAsync(It.IsAny<string>()))
             .ReturnsAsync(null as IEnumerable<Actor>);
-            var actorController = new ActorController(_mockActorBusiness.Object, _mapper);  
+            var actorController = new ActorController(_mockActorBusiness.Object, _mapper);
 
             //Act
             var actionResult = await actorController.GetActorsByLastName("Ana");
