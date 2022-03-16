@@ -24,16 +24,16 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMovieAsync(MovieModel movie)
+        public async Task<IActionResult> CreateMovieAsync(MovieModel movieModel)
         {
-            if (movie == null)
+            if (movieModel == null)
             {
                 return BadRequest();
             }
             try
             {
-                await _movieBusiness.CreateMovieAsync(_mapper.Map<Movie>(movie));
-                return Ok();
+                var movie = await _movieBusiness.CreateMovieAsync(_mapper.Map<Movie>(movieModel));
+                return Ok(_mapper.Map<MovieModel>(movie));
             }
             catch (Exception ex)
             {
@@ -70,7 +70,7 @@ namespace Movies.Api.Controllers
                 return BadRequest();
             }
             var result = await _movieBusiness.GetMoviesByNameAsync(name);
-            if (result == null)
+            if (result == null || !result.Any())
             {
                 return NotFound();
             }

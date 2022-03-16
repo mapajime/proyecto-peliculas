@@ -16,10 +16,11 @@ namespace Movies.Business.Implementations
             _countryRepository = repository;
         }
 
-        public async Task CreateCountryAsync(Country country)
+        public async Task<Country> CreateCountryAsync(Country country)
         {
             ValidateCountry(country);
             await _countryRepository.AddAsync(country);
+            return country;
         }
 
         public async Task DeleteCountryAsync(Guid id) => await _countryRepository.DeleteAsync(id);

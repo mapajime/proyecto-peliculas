@@ -14,10 +14,11 @@ namespace Movies.Business.Implementations
         {
             _languageRepository = repository;
         }
-        public async Task CreateLanguageAsync(Language language)
+        public async Task<Language> CreateLanguageAsync(Language language)
         {
             ValidateLanguage(language);
             await _languageRepository.AddAsync(language);
+            return language;
         }
         public async Task DeleteLanguageAsync(Guid id) => await _languageRepository.DeleteAsync(id);
 

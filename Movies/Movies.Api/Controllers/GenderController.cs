@@ -24,16 +24,16 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGenderAsync(GenderModel gender)
+        public async Task<IActionResult> CreateGenderAsync(GenderModel genderModel)
         {
-            if (gender == null)
+            if (genderModel == null)
             {
                 return BadRequest();
             }
             try
             {
-                await _genderBusiness.CreateGenderAsync(_mapper.Map<Gender>(gender));
-                return Ok();
+                var gender = await _genderBusiness.CreateGenderAsync(_mapper.Map<Gender>(genderModel));
+                return Ok(_mapper.Map<GenderModel>(gender));
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace Movies.Api.Controllers
             }
         }
 
-        [HttpDelete("{id : Guid}")]
+        [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteGenderAsync(Guid id)
         {
             await _genderBusiness.DeleteGenderAsync(id);
@@ -56,14 +56,14 @@ namespace Movies.Api.Controllers
                 return BadRequest();
             }
             var result = await _genderBusiness.GetGenderByNameAsync(name);
-            if (result == null)
+            if (result == null || !result.Any())
             {
                 return NotFound();
             }
             return Ok(result.Select(g => _mapper.Map<GenderModel>(g)));
         }
 
-        [HttpGet]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetGenderByIdAsync(Guid id)
         {
             var result = await _genderBusiness.GetGenderByIdAsync(id);

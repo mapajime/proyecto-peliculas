@@ -7,7 +7,7 @@ namespace Movies.Api.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public Guid NacionalityId { get; set; }
+        public Guid NationalityId { get; set; }
         public float? Weight { get; set; }
         public int Height { get; set; }
         public float? NetWorth { get; set; }

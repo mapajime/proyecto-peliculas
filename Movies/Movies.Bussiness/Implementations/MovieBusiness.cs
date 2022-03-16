@@ -11,16 +11,21 @@ namespace Movies.Business.Implementations
     public class MovieBusiness : IMovieBusiness
     {
         private readonly IMovieRepository _repository;
+        private readonly IActorRepository _actorRepository;
 
-        public MovieBusiness(IMovieRepository repository)
+        public MovieBusiness(IMovieRepository repository, IActorRepository actorRepository)
         {
             _repository = repository;
+            _actorRepository = actorRepository;
         }
 
-        public async Task CreateMovieAsync(Movie movie)
+        public async Task<Movie> CreateMovieAsync(Movie movie)
         {
             ValidateMovie(movie);
+            var cast = await _actorRepository.GetRangeByIdsAsync(movie.Cast.Select(c => c.Id));
+            movie.Cast = cast.ToList();
             await _repository.AddAsync(movie);
+            return movie;
         }
 
         public async Task DeleteMovieAsync(Guid id) => await _repository.DeleteAsync(id);

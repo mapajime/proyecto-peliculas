@@ -7,7 +7,7 @@ namespace Movies.Business.Interfaces
 {
     public interface ILanguageBusiness
     {
-        Task CreateLanguageAsync(Language language);
+        Task<Language> CreateLanguageAsync(Language language);
 
         Task UpdateLanguageByIdAsync(Language language);
 

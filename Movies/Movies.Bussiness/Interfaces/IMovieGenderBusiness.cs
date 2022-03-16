@@ -7,7 +7,7 @@ namespace Movies.Business.Interfaces
 {
     public interface IMovieGenderBusiness
     {
-        Task CreateGenderMovieAsync(MovieGender movieGender);
+        Task<MovieGender> CreateGenderMovieAsync(MovieGender movieGender);
 
         Task UpdateGenderMovieByIdAsync(MovieGender gender);
 

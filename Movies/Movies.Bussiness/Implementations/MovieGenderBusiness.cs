@@ -16,12 +16,12 @@ namespace Movies.Business.Implementations
             _movieGenderRepository = movieGenderRepository;
         }
 
-        public async Task CreateGenderMovieAsync(MovieGender movieGender)
+        public async Task<MovieGender> CreateGenderMovieAsync(MovieGender movieGender)
         {
-           ValidateMovieGender(movieGender);
+            ValidateMovieGender(movieGender);
             await _movieGenderRepository.AddAsync(movieGender);
+            return movieGender;
         }
-
 
         public async Task DeleteGenderMovieAsync(Guid id) => await _movieGenderRepository.DeleteAsync(id);
 
@@ -36,7 +36,7 @@ namespace Movies.Business.Implementations
 
         public async Task<MovieGender> GetGenderMovieByIdAsync(Guid id)
         {
-           return await _movieGenderRepository.GetByIdAsync(id);
+            return await _movieGenderRepository.GetByIdAsync(id);
         }
 
         public async Task UpdateGenderMovieByIdAsync(MovieGender gender)
@@ -49,10 +49,8 @@ namespace Movies.Business.Implementations
         {
             if (string.IsNullOrEmpty(gender?.Name))
             {
-                throw new ArgumentNullException(nameof(gender),"The movie gender cannont be null o empty");
+                throw new ArgumentNullException(nameof(gender), "The movie gender cannont be null o empty");
             }
         }
-
-
     }
 }

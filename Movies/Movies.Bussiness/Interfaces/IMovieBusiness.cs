@@ -7,7 +7,7 @@ namespace Movies.Business.Interfaces
 {
     public interface IMovieBusiness
     {
-        Task CreateMovieAsync(Movie movie);
+        Task<Movie> CreateMovieAsync(Movie movie);
 
         Task UpdateMovieAsync(Movie movie);
 

@@ -24,16 +24,16 @@ namespace Movies.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateLanguageAsync(LanguageModel language)
+        public async Task<IActionResult> CreateLanguageAsync(LanguageModel languageModel)
         {
-            if (language == null)
+            if (languageModel == null)
             {
                 return BadRequest();
             }
             try
             {
-                await _languageBusiness.CreateLanguageAsync(_mapper.Map<Language>(language));
-                return Ok();
+                var language = await _languageBusiness.CreateLanguageAsync(_mapper.Map<Language>(languageModel));
+                return Ok(_mapper.Map<LanguageModel>(language));
             }
             catch (Exception ex)
             {
@@ -55,10 +55,6 @@ namespace Movies.Api.Controllers
             {
                 return BadRequest();
             }
-            if (string.IsNullOrEmpty(name))
-            {
-                return BadRequest();
-            }
             var result = await _languageBusiness.GetLanguagesByNameAsync(name);
             if (result == null)
             {
@@ -67,7 +63,7 @@ namespace Movies.Api.Controllers
             return Ok(result.Select(l => _mapper.Map<LanguageModel>(l)));
         }
 
-        [HttpGet]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetLanguagesByIdAsync(Guid id)
         {
             var result = await _languageBusiness.GetLanguageByIdAsync(id);

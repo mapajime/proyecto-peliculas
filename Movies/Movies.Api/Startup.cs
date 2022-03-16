@@ -11,6 +11,7 @@ using Movies.Business.Interfaces;
 using Movies.DataAccess.Context;
 using Movies.DataAccess.Repositories.Implementation;
 using Movies.DataAccess.Repositories.Interfaces;
+using System.Linq;
 
 namespace Movies.Api
 {
@@ -26,12 +27,15 @@ namespace Movies.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             var mapperConfig = new MapperConfiguration(m => m.AddProfile(new MappingProfile()));
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
             services.AddDbContext<MovieContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("movies")));
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
+            });
             services.AddScoped<IActorRepository, ActorRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<ILanguageRepository, LanguageRepository>();
