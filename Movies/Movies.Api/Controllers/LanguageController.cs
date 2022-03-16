@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Movies.Api.Models;
+using Movies.Models;
 using Movies.Business.Interfaces;
 using Movies.Entities;
 using System;

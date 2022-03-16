@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Movies.Api.Models
+namespace Movies.Models
 {
     public class ActorModel : ModelBase
     {
