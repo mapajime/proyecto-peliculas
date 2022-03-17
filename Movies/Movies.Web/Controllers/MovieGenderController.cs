@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Movies.Models;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Movies.Web.Controllers
 {
@@ -12,9 +17,16 @@ namespace Movies.Web.Controllers
             _httpClient = httpClientFactory.CreateClient("MovieApiClient");
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await _httpClient.GetAsync("MovieGender");
+            if (result.IsSuccessStatusCode)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var list = JsonConvert.DeserializeObject<IEnumerable<MovieGenderModel>>(content);
+                return View(list);
+            }
+            return View(Enumerable.Empty<MovieGenderModel>());
         }
     }
 }
