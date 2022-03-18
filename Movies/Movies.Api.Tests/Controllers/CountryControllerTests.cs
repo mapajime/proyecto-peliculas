@@ -163,6 +163,30 @@ namespace Movies.Api.Tests.Controllers
         }
 
         [Fact]
+        public async Task GetAllCountrieAsync_WhenCountryAreCalled_ShouldReturnOkWithCounties()
+        {
+            //Arrange
+            _mockCountryBusiness.Setup(c => c.GetAllCountriesAsync())
+                .ReturnsAsync(new List<Country> { new Country { Name = "España" }, new Country { Name = "Colombia" } });
+            var countryController = new CountryController(_mockCountryBusiness.Object, _mapper);
+
+            //Act
+            var actionResult = await countryController.GetCountriesAsync();
+
+            //Assert
+            Assert.NotNull(actionResult);
+            var result = actionResult as OkObjectResult;
+            Assert.NotNull(result);
+            var list = (result.Value as IEnumerable<CountryModel>)?.ToList();
+            Assert.NotNull(list);
+            Assert.Equal("España", list[0].Name);
+            Assert.Equal("Colombia", list.Last().Name);
+            Assert.Equal(2, list.Count);
+
+            _mockCountryBusiness.Verify(c => c.GetAllCountriesAsync(), Times.Once);
+        }
+
+        [Fact]
         public async Task UpdateCountryByIdAsync_WhenCountryIsEmpty_ShouldReturnInternalServerError()
         {
             //Arrange
