@@ -42,6 +42,8 @@ namespace Movies.Business.Implementations
             await _countryRepository.UpdateAsync(country);
         }
 
+        public async Task<Country> GetCountryByIdAsync(Guid id) => await _countryRepository.GetByIdAsync(id);
+
         private static void ValidateCountry(Country country)
         {
             if (string.IsNullOrEmpty(country?.Name))

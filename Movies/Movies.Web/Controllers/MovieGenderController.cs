@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Movies.Models;
+using Movies.Web.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Movies.Web.Utilities;
 
 namespace Movies.Web.Controllers
 {
@@ -36,6 +35,7 @@ namespace Movies.Web.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(MovieGenderModel movieGenderModel)
         {
@@ -61,6 +61,7 @@ namespace Movies.Web.Controllers
             }
             return RedirectToAction("Index");
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(MovieGenderModel movieGenderModel)
         {
@@ -83,6 +84,7 @@ namespace Movies.Web.Controllers
             }
             return RedirectToAction("Index");
         }
+
         [HttpPost]
         public async Task<IActionResult> Delete(MovieGenderModel movieGenderModel)
         {
@@ -93,6 +95,5 @@ namespace Movies.Web.Controllers
             }
             return View(movieGenderModel);
         }
-
     }
 }

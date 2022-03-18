@@ -2,11 +2,11 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @using Movies.Models
-@model IEnumerable<CountryModel>
+@model IEnumerable<LanguageModel>
 @{
-    ViewData["Titel"] = "Countries";
+    ViewData["Titel"] = "Languages";
 }
-<h3>List of Countries</h3>
+<h3>List of Languages</h3>
 
 @Html.ActionLink("Create", "Create")
 
@@ -21,15 +21,15 @@
 
     </thead>
     <tbody>
-        @foreach (var country in Model)
+        @foreach (var language in Model)
         {
             <tr>
-                <td>@country.Name</td>
-                <td>@country.CreatedAt.ToString("yyyy-MM-dd")</td>
-                <td>@country.ModifiedAt.ToString("yyyy-MM-dd")</td>
+                <td>@language.Name</td>
+                <td>@language.CreatedAt.ToString("yyyy-MM-dd")</td>
+                <td>@language.ModifiedAt.ToString("yyyy-MM-dd")</td>
                 <td>
-                    @Html.ActionLink("Edit","Edit", new {id=@country.Id}) &nbsp
-                    @Html.ActionLink("Delete","Delete", new {id=@country.Id})
+                    @Html.ActionLink("Edit","Edit", new {id=@language.Id}) &nbsp
+                    @Html.ActionLink("Delete","Delete", new {id=@language.Id})
                 </td>
             </tr>
         }

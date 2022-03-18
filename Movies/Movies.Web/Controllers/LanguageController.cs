@@ -10,26 +10,26 @@ using System.Threading.Tasks;
 
 namespace Movies.Web.Controllers
 {
-    public class CountryController : Controller
+    public class LanguageController : Controller
     {
-        private readonly HttpClient _httpClient;
+        private HttpClient _httpClient;
 
-        public CountryController(IHttpClientFactory httpClientFactory)
+        public LanguageController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("MovieApiClient");
         }
 
         public async Task<IActionResult> Index()
         {
-            var result = await _httpClient.GetAsync("Country");
+            var result = await _httpClient.GetAsync("Language");
             if (result.IsSuccessStatusCode)
             {
                 var content = await result.Content.ReadAsStringAsync();
-                var countries = JsonConvert.DeserializeObject<IEnumerable<CountryModel>>(content);
-                return View(countries);
+                var language = JsonConvert.DeserializeObject<IEnumerable<LanguageModel>>(content);
+                return View(language);
             }
 
-            return View(Enumerable.Empty<CountryModel>());
+            return View(Enumerable.Empty<LanguageModel>());
         }
 
         public async Task<IActionResult> Create()
@@ -38,46 +38,46 @@ namespace Movies.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CountryModel countryModel)
+        public async Task<IActionResult> Create(LanguageModel languageModel)
         {
-            var json = JsonConvert.SerializeObject(countryModel);
+            var json = JsonConvert.SerializeObject(languageModel);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            var result = await _httpClient.PostAsync("Country", data);
+            var result = await _httpClient.PostAsync("Language", data);
             if (result.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
-            return View(countryModel);
+            return View(languageModel);
         }
 
         public async Task<IActionResult> Edit(Guid id)
         {
-            var result = await _httpClient.GetAsync($"Country/{id}");
+            var result = await _httpClient.GetAsync($"Language/{id}");
             if (result.IsSuccessStatusCode)
             {
                 var content = await result.Content.ReadAsStringAsync();
-                var country = JsonConvert.DeserializeObject<CountryModel>(content);
-                return View(country);
+                var language = JsonConvert.DeserializeObject<LanguageModel>(content);
+                return View(language);
             }
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CountryModel countryModel)
+        public async Task<IActionResult> Edit(LanguageModel languageModel)
         {
-            var json = JsonConvert.SerializeObject(countryModel);
+            var json = JsonConvert.SerializeObject(languageModel);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            var result = await _httpClient.PutAsync("Country", data);
+            var result = await _httpClient.PutAsync("Language", data);
             if (result.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
-            return View(countryModel);
+            return View(languageModel);
         }
 
         public async Task<IActionResult> Delete(Guid id)
         {
-            var result = await _httpClient.DeleteAsync($"Country/{id}");
+            var result = await _httpClient.DeleteAsync($"Language/{id}");
             if (result.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");

@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Movies.Models;
+@model IEnumerable<MovieModel>
+@{
+    ViewData["Title"] = "Movie";
+}
+<h3>List of Movie</h3>
+
+@Html.ActionLink("Create","Create")
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Duration</th>
+            <th>Argument/th>
+            <th>Slogan</th>
+            <th>Director</th>
+            <th>Release Date</th>
+            <th>Created At</th>
+            <th>Modified At</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movieModel in Model)
+        {
+            <tr>
+                <td>@movieModel.Name</td>
+                <td>@movieModel.Duration</td>
+                <td>@movieModel.Argument</td>
+                <td>@movieModel.Slogan</td>
+                <td>@movieModel.Director</td>
+                <td>@movieModel.ReleaseDate</td>
+                <td>@movieModel.CreatedAt.ToString("dd-MM-yyyy")</td>
+                <td>@movieModel.ModifiedAt.ToString("dd-MM-yyyy")</td>
+                <td>
+                    @Html.ActionLink("Edit","Edit", new {id= movieModel.Id}) &nbsp
+                    @Html.ActionLink("Delete","Delete", new {id=movieModel.Id})
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
