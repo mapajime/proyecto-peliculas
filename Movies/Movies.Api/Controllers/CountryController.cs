@@ -63,6 +63,13 @@ namespace Movies.Api.Controllers
             return Ok(result.Select(c => _mapper.Map<CountryModel>(c)));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCountriesAsync()
+        {
+            var result = await _countryBusiness.GetAllCountriesAsync();
+            return Ok(result.Select(c => _mapper.Map<CountryModel>(c)));
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateCountryByIdAsync(CountryModel country)
         {
