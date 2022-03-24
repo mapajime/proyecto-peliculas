@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Movies.Models;
+using Movies.Web.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,13 @@ namespace Movies.Web.Controllers
 
         public async Task<IActionResult> Create()
         {
-            return View();
+            var genders = await GetGendersAsync();
+            var countries = await GetCountryAsync();
+            var actor = new ActorViewModel();
+            actor.Genders = genders.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Name });
+            actor.Nacionalities = countries.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Name });
+
+            return View(actor);
         }
 
         [HttpPost]
@@ -55,9 +63,14 @@ namespace Movies.Web.Controllers
             if (result.IsSuccessStatusCode)
             {
                 var content = await result.Content.ReadAsStringAsync();
-                var actor = JsonConvert.DeserializeObject<ActorModel>(content);
+                var genders = await GetGendersAsync();
+                var countries = await GetCountryAsync();
+                var actor = JsonConvert.DeserializeObject<ActorViewModel>(content);
+                actor.Genders = genders.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Name });
+                actor.Nacionalities = countries.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Name });
                 return View(actor);
             }
+
             return RedirectToAction("Index");
         }
 
@@ -82,6 +95,30 @@ namespace Movies.Web.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+
+        private async Task<IEnumerable<GenderModel>> GetGendersAsync()
+        {
+            var result = await _httpClient.GetAsync("Gender");
+            if (result.IsSuccessStatusCode)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var genders = JsonConvert.DeserializeObject<IEnumerable<GenderModel>>(content);
+                return genders;
+            }
+            return Enumerable.Empty<GenderModel>();
+        }
+
+        private async Task<IEnumerable<CountryModel>> GetCountryAsync()
+        {
+            var result = await _httpClient.GetAsync("Country");
+            if (result.IsSuccessStatusCode)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var countries = JsonConvert.DeserializeObject<IEnumerable<CountryModel>>(content);
+                return countries;
+            }
+            return Enumerable.Empty<CountryModel>();
         }
     }
 }
