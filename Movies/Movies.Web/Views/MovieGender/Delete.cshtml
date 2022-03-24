@@ -1,0 +1,26 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Movies.Models;
+@model MovieGenderModel;
+@{
+    ViewData["Title"] = "Delete Movie Gender";
+}
+<h3>Delete Movie Gender</h3>
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <hr />
+        <spam>
+            Esta seguro que desea borrar el gender @Model.Name ?
+        </spam>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Delete" class="btn btn-primary">
+                @Html.ActionLink("Cancel","Index")
+            </div>
+        </div>
+    </div>
+}

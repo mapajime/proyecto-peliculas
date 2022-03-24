@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Movies.Api.Models;
 using Movies.Business.Interfaces;
 using Movies.Entities;
+using Movies.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,6 +61,13 @@ namespace Movies.Api.Controllers
                 return NotFound();
             }
             return Ok(result.Select(m => _mapper.Map<MovieGenderModel>(m)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllMovieGenderAsync()
+        {
+            var result = (await _movieGenderBusiness.GetAllGenderMovieAsync());
+            return Ok(result.Select(mg => _mapper.Map<MovieGenderModel>(mg)));
         }
 
         [HttpGet("{id:Guid}")]

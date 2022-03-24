@@ -34,10 +34,9 @@ namespace Movies.Business.Implementations
             return await _movieGenderRepository.FilterAsync(n => n.Name.Contains(name));
         }
 
-        public async Task<MovieGender> GetGenderMovieByIdAsync(Guid id)
-        {
-            return await _movieGenderRepository.GetByIdAsync(id);
-        }
+        public async Task<MovieGender> GetGenderMovieByIdAsync(Guid id) => await _movieGenderRepository.GetByIdAsync(id);
+
+        public async Task<IEnumerable<MovieGender>> GetAllGenderMovieAsync() => await _movieGenderRepository.GetAllAsync();
 
         public async Task UpdateGenderMovieByIdAsync(MovieGender gender)
         {

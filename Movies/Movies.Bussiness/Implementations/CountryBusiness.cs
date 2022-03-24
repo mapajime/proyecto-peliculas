@@ -34,11 +34,15 @@ namespace Movies.Business.Implementations
             return await _countryRepository.FilterAsync(n => n.Name == name);
         }
 
+        public async Task<IEnumerable<Country>> GetAllCountriesAsync() => await _countryRepository.GetAllAsync();
+
         public async Task UpdateCountryByIdAsync(Country country)
         {
             ValidateCountry(country);
             await _countryRepository.UpdateAsync(country);
         }
+
+        public async Task<Country> GetCountryByIdAsync(Guid id) => await _countryRepository.GetByIdAsync(id);
 
         private static void ValidateCountry(Country country)
         {

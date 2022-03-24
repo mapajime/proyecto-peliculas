@@ -72,6 +72,27 @@ namespace Movies.Business.Tests.Implementations
         }
 
         [Fact]
+        public async Task GetAllCountriesAsync_WhenCountriesExist_ShouldReturnAllCountries()
+        {
+            //Arrange
+            _mockCountryRepository.Setup(c => c.GetAllAsync())
+                .ReturnsAsync(new List<Country>
+                {
+                    new Country { Name="España"},
+                    new Country { Name="Colombia"},
+                });
+            var countryBusiness = new CountryBusiness(_mockCountryRepository.Object);
+
+            //Act
+            var countries = await countryBusiness.GetAllCountriesAsync();
+
+            //Assert
+            Assert.NotNull(countries);
+            Assert.True(countries.Any());
+            Assert.Equal(2, countries.Count());
+        }
+
+        [Fact]
         public async Task GetCountriesByNameAsync_WhenCountryIsOk_ShouldGetCountry()
         {
             //Arrange

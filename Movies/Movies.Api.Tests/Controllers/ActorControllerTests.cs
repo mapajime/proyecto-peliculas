@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Movies.Api.Configuration;
 using Movies.Api.Controllers;
-using Movies.Api.Models;
+using Movies.Models;
 using Movies.Business.Interfaces;
 using Movies.Entities;
 using System;

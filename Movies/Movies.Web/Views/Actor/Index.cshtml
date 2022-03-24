@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Movies.Models;
+@model IEnumerable<ActorModel>
+@{
+    ViewData["Title"] = "Actor";
+}
+<h3>List of Actors</h3>
+
+@Html.ActionLink("Create","Create")
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(p => p.First().FirstName) </th>
+            <th>@Html.DisplayNameFor(p => p.First().LastName)</th>
+            <th>@Html.DisplayNameFor(p => p.First().DateOfBirth) </th>
+            <th>@Html.DisplayNameFor(p => p.First().Weight)</th>
+            <th>@Html.DisplayNameFor(p => p.First().Height) </th>
+            <th>@Html.DisplayNameFor(p => p.First().NetWorth)</th>
+            <th>@Html.DisplayNameFor(p => p.First().NumberOfChildren) </th>
+            <th>@Html.DisplayNameFor(p => p.First().CreatedAt)</th>
+            <th>@Html.DisplayNameFor(p => p.First().ModifiedAt)</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actorModel in Model)
+        {
+            <tr>
+                <td>@actorModel.FirstName</td>
+                <td>@actorModel.LastName</td>
+                <td>@actorModel.DateOfBirth</td>
+                <td>@actorModel.Weight</td>
+                <td>@actorModel.Height</td>
+                <td>@actorModel.NetWorth</td>
+                <td>@actorModel.NumberOfChildren</td>
+                <td>@actorModel.CreatedAt.ToString("dd-MM-yyyy")</td>
+                <td>@actorModel.ModifiedAt.ToString("dd-MM-yyyy")</td>
+                <td>
+                    @Html.ActionLink("Edit","Edit", new {id= @actorModel.Id}) &nbsp
+                    @Html.ActionLink("Delete","Delete", new {id=@actorModel.Id})
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Movies.Api.Models;
+using Movies.Models;
 using Movies.Entities;
 
 namespace Movies.Api.Configuration

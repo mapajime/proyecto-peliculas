@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Movies.Api.Models;
 using Movies.Business.Interfaces;
 using Movies.Entities;
+using Movies.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,15 +63,40 @@ namespace Movies.Api.Controllers
             return Ok(result.Select(c => _mapper.Map<CountryModel>(c)));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCountriesAsync()
+        {
+            var result = await _countryBusiness.GetAllCountriesAsync();
+            return Ok(result.Select(c => _mapper.Map<CountryModel>(c)));
+        }
+
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetCountryByIdAsync(Guid id)
+        {
+            var result = await _countryBusiness.GetCountryByIdAsync(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<CountryModel>(result));
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateCountryByIdAsync(CountryModel country)
         {
-            if (string.IsNullOrEmpty(country.Name))
+            if (country == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest();
             }
-            await _countryBusiness.UpdateCountryByIdAsync(_mapper.Map<Country>(country));
-            return Ok();
+            try
+            {
+                await _countryBusiness.UpdateCountryByIdAsync(_mapper.Map<Country>(country));
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

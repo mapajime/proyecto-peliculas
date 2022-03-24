@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Movies.Models;
+@model MovieGenderModel;
+@{
+    ViewData["Title"] = "Edit Movie Gender";
+}
+<h3>Edit Movie Gender</h3>
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <hr />
+        <div class="col-sm-10 font-weight-bold form-group">
+            @Html.LabelFor(model=>model.Name)
+            @Html.EditorFor(model=>model.Name)
+        </div><div class="col-sm-10 font-weight-bold form-group">
+            @Html.LabelFor(model=>model.Description)
+            @Html.EditorFor(model=>model.Description)
+        </div>
+        <div> 
+            @Html.HiddenFor(model=>model.Id)
+            @Html.HiddenFor(model=>model.CreatedAt)
+            @Html.HiddenFor(model=>model.ModifiedAt)
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Edit" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+}
+
+

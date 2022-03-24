@@ -1,8 +1,7 @@
-﻿using Movies.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Movies.Api.Models
+namespace Movies.Models
 {
     public class MovieModel : ModelBase
     {
